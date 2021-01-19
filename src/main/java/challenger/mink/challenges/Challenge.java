@@ -19,19 +19,21 @@ import lombok.Setter;
 @Setter
 public class Challenge {
   @Id
-  @GeneratedValue (strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   private String name;
   private LocalDate startDate;
   private LocalDate endDate;
-  @OneToMany (mappedBy = "challenge")
+  private int minimumCommitment;
+  @OneToMany(mappedBy = "challenge")
   private List<Commitment> commitmentList;
-  @OneToMany (mappedBy = "challenge")
+  @OneToMany(mappedBy = "challenge")
   private List<User> userList;
 
-  public Challenge(String name, LocalDate startDate, LocalDate endDate) {
+  public Challenge(String name, LocalDate startDate, LocalDate endDate, int minimumCommitment) {
     this.name = name;
     this.startDate = startDate;
     this.endDate = endDate;
+    this.minimumCommitment = minimumCommitment;
   }
 }
