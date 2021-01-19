@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @NoArgsConstructor
@@ -23,6 +24,7 @@ public class Commitment {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   private String description;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate date;
   private boolean done;
   @ManyToOne

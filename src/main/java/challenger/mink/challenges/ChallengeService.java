@@ -1,5 +1,7 @@
 package challenger.mink.challenges;
 
+import java.util.List;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,4 +10,15 @@ import org.springframework.stereotype.Service;
 public class ChallengeService {
   private final ChallengeRepository challengeRepository;
 
+  public List<Challenge> findAll() {
+    return challengeRepository.findAll();
+  }
+
+  public void addChallenge(Challenge challenge) {
+    challengeRepository.save(challenge);
+  }
+
+  public Challenge getChallengeById(long id) {
+    return challengeRepository.findById(id).orElseThrow(NoSuchElementException::new);
+  }
 }

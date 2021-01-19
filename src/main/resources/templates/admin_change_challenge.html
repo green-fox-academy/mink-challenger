@@ -28,22 +28,27 @@
         </th>
     </tr>
 </table>
-<h2>Create a new challenge</h2>
-<form class="form-group" th:action="addchallenge" th:method="post" th:object="${challenge}">
+<h2 th:object="${currentChallenge}">Edit challenge</h2>
+<form class="form-group" th:action="'/admin/' + ${currentChallenge.getId()}" th:object="${currentChallenge}"
+      th:method="POST">
     <div>
         <input type="hidden" th:field="*{id}">
         <label for="challenge">Challenge Name</label>
-        <input type="text" id="challenge" th:field="*{name}"><br>
+        <input type="text" id="challenge"
+               th:field="*{name}"><br>
         <label for="start">Start date</label>
         <input type="date" id="start"
                value="2021-01-01"
-               min="2021-01-01" max="2025-12-31" th:field="*{startDate}"><br>
+               min="2021-01-01" max="2025-12-31" th:datetime="${currentChallenge.getStartDate()}"
+               th:field="*{startDate}"><br>
         <label for="end">End date</label>
         <input type="date" id="end"
                value="2021-01-01"
-               min="2021-01-01" max="2025-12-31" th:field="*{endDate}"><br>
+               min="2021-01-01" max="2025-12-31" th:datetime="${currentChallenge.getEndDate()}"
+               th:field="*{endDate}"><br>
         <label for="minimumCommitment">Number of minimum commitments</label>
-        <input type="number" min=1 id="minimumCommitment" th:field="*{minimumCommitment}"><br>
+        <input type="number" min=1 id="minimumCommitment"
+               th:number="${currentChallenge.getMinimumCommitment()}" th:field="*{minimumCommitment}"><br>
     </div>
     <button type="submit" class="btn-dark">Submit</button>
 </form>
