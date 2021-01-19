@@ -25,7 +25,7 @@
         <td th:text="${challenge.getEndDate()}"></td>
         <td th:text="${challenge.getDescription()}"></td>
         <td th:text="${challenge.getUsers()}"></td>
-        <th th:href="/editChallenge">Edit</th>
+        <th th:href="'/editChallenge/' + ${challenge.getId()}">Edit</th>
     </tr>
 </table>
 <h2>Create a new challenge</h2>

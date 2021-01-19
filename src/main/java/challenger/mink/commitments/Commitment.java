@@ -21,9 +21,9 @@ import lombok.Setter;
 public class Commitment {
   @Id
   @GeneratedValue (strategy = GenerationType.IDENTITY)
-  private long id;
-  private String description;
-  private LocalDate date;
+  private long id; // magától képződik
+  private String description; // "Béla"
+  private LocalDate date; //
   private boolean done;
   @ManyToOne
   private User user;

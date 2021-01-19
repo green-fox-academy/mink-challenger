@@ -22,6 +22,6 @@ public class ChallengeController {
   public String addChallenge(Model model, @ModelAttribute Challenge challenge){
     model.addAttribute("newChallenge", new Challenge());
     challengeService.addChallenge(challenge);
-    return "redirect admin.html";
+    return "redirect:/admin";
     }
 }
