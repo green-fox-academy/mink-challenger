@@ -18,17 +18,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table (name = "challenges")
+@Table(name = "challenges")
 public class Challenge {
   @Id
-  @GeneratedValue (strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   private String name;
   private LocalDate startDate;
   private LocalDate endDate;
-  @OneToMany (mappedBy = "challenge")
+  @OneToMany(mappedBy = "challenge")
   private List<Commitment> commitmentList;
-  @OneToMany (mappedBy = "challenge")
+  @OneToMany(mappedBy = "challenge")
   private List<User> userList;
 
   public Challenge(String name, LocalDate startDate, LocalDate endDate) {
