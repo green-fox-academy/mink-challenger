@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommitmentRepository extends JpaRepository<Commitment, Long> {
 
-List<Commitment> findAll();
+  List<Commitment> findAll();
 
 }
