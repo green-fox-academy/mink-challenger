@@ -26,7 +26,7 @@ public class Challenge {
   private String name;
   private LocalDate startDate;
   private LocalDate endDate;
-  private int minimumCommitment;
+  private long minimumCommitment;
   @OneToMany(mappedBy = "challenge")
   private List<Commitment> commitmentList;
   @OneToMany(mappedBy = "challenge")
