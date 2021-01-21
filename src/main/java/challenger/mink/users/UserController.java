@@ -26,4 +26,14 @@ public class UserController {
     return "redirect:/commitment/" + userService.registerNewUser(user).getId();
 
   }
+
+  @GetMapping(value = "/nosafe")
+  public String renderNoSafe() {
+    return "nosafe";
+  }
+
+  @GetMapping(value = "/safe")
+  public String renderSafe() {
+    return "safe";
+  }
 }
