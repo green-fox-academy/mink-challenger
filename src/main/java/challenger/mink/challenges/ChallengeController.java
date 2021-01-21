@@ -43,8 +43,8 @@ public class ChallengeController {
                              @PathVariable long id) {
     Challenge currentChallenge = challengeService.getChallengeById(id);
     currentChallenge.setName(challenge.getName());
-    currentChallenge.setStartDate(challenge.getStartDate());
-    currentChallenge.setEndDate(challenge.getEndDate());
+    currentChallenge.setStartDate(challenge.getStartDate().plusDays(1));
+    currentChallenge.setEndDate(challenge.getEndDate().plusDays(1));
     currentChallenge.setMinimumCommitment(challenge.getMinimumCommitment());
     challengeService.addChallenge(challenge);
     return "redirect:/admin";
