@@ -9,5 +9,6 @@ public class MinkApplication {
   public static void main(String[] args) {
     SpringApplication.run(MinkApplication.class, args);
     System.out.println("what does the mink say?");
+
   }
 }
