@@ -58,4 +58,11 @@ public class ChallengeController {
     challengeService.addChallenge(challenge);
     return "redirect:/admin";
   }
+
+  @PostMapping("/delChallenge/{challengeId}")
+  public String delChallegne(@PathVariable long challengeId) {
+    challengeService.deleteChallenge(challengeId);
+    return "redirect:/admin";
+  }
+
 }

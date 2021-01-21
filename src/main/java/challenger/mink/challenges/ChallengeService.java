@@ -22,4 +22,9 @@ public class ChallengeService {
   public Challenge getChallengeById(long id) throws NoSuchChallengeMinkCeption {
     return challengeRepository.findById(id).orElseThrow(NoSuchChallengeMinkCeption::new);
   }
+
+  public void deleteChallenge(long challengeId) {
+    Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(NoSuchElementException::new);
+    challengeRepository.delete(challenge);
+  }
 }
