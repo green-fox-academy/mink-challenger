@@ -35,7 +35,7 @@ public class Challenge {
   @OneToMany(mappedBy = "challenge")
   private List<User> userList;
 
-  public Challenge(String name, LocalDate startDate, LocalDate endDate, long minimumCommitment) {
+  public Challenge(String name, LocalDate startDate, LocalDate endDate, Long minimumCommitment) {
     this.name = name;
     this.startDate = startDate;
     this.endDate = endDate;
