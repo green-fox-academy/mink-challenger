@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
-import lombok.var;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +20,7 @@ public class CommitmentService {
   public List<Commitment> findAll() {
     return commitmentRepository.findAll();
   }
+
   public List<Commitment> findAllByUser(long userId) {
     return commitmentRepository.findByUserId(userId);
   }
@@ -38,7 +38,8 @@ public class CommitmentService {
   }
 
   public void saveChangedCommitment(long commitmentId, Commitment currentCommitment) {
-    Commitment commitment = commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
+    Commitment commitment =
+        commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
     commitment.setDescription(currentCommitment.getDescription());
     commitment.setDate(currentCommitment.getDate());
     commitmentRepository.save(commitment);
