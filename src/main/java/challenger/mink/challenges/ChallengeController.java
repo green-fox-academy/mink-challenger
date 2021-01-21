@@ -45,5 +45,3 @@ public class ChallengeController {
     return "redirect:/admin";
   }
 }
-
-

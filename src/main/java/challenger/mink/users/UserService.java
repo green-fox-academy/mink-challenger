@@ -24,5 +24,3 @@ public class UserService {
     return userRepository.existsUserByUsername(name);
   }
 }
-//jdbc:mysql://localhost:3306/mink?serverTimezone=UTC
-//jdbc:mysql://localhost:3306/employee_database?useSSL=false
