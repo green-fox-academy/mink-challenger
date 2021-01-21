@@ -40,7 +40,7 @@
         <label for="challenge">Choose the challenge: </label>
         <select id="challenge" name="challengeId">
             <option th:each="challenge : ${challenges}" th:value="${challenge.getId()}"
-                    th:text="${challenge.getName()}" ></option>
+                    th:text="${challenge.getName()}"></option>
         </select>
     </div>
     <button type="submit" class="btn-dark">Submit</button>

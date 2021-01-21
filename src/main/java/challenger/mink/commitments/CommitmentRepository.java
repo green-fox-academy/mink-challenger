@@ -10,6 +10,6 @@ public interface CommitmentRepository extends JpaRepository<Commitment, Long> {
 
   List<Commitment> findAll();
 
-  @Query (value = "SELECT * FROM commitments WHERE user_id = :userId", nativeQuery = true)
+  @Query(value = "SELECT * FROM commitments WHERE user_id = :userId", nativeQuery = true)
   List<Commitment> findByUserId(long userId);
 }
