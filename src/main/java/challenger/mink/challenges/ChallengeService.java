@@ -15,6 +15,8 @@ public class ChallengeService {
   }
 
   public void addChallenge(Challenge challenge) {
+    challenge.setStartDate(challenge.getStartDate().plusDays(1));
+    challenge.setEndDate(challenge.getEndDate().plusDays(1));
     challengeRepository.save(challenge);
   }
 
