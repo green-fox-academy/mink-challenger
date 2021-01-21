@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Login Page</title>
+</head>
+<body>
+<h1>Welcome to Programmer MinkChallenge!</h1>
+<p>Please provide your username and password!</p>
+
+<form th:action="@{'/login?username=' + ${username}}" method="post" th:object="${user}">
+    <label for="username">Name</label>
+    <input type="text" id="username" name="username" th:field="*{username}" required>
+    <br>
+    <label for="password">Name</label>
+    <input type="password" id="password" name="password" th:field="*{password}" required>
+    <input type="submit" value="GO">
+</form>
+</body>
+</html>
