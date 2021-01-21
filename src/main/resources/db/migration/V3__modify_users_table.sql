@@ -2,11 +2,11 @@ ALTER TABLE users
     ADD password VARCHAR(60);
 
 update users
-set password = 'pass'
+set password = '$2y$12$jnlHdPuXJ04ExbPEWxDMjuURSrzurWnWCsbf/RSxxWxLEuYJzuttW'
 WHERE id = 1;
 
 update users
-set password = 'pass'
+set password = '$2y$12$jnlHdPuXJ04ExbPEWxDMjuURSrzurWnWCsbf/RSxxWxLEuYJzuttW'
 WHERE id = 2;
 
 ALTER TABLE users

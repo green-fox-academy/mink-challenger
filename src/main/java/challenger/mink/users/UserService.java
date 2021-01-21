@@ -9,7 +9,7 @@ public class UserService {
   private final UserRepository userRepository;
 
   public User registerNewUser(User user) throws OccupiedUsernameMinkCeption {
-    if (isUsernameOccupied(user.getName())) {
+    if (isUsernameOccupied(user.getUsername())) {
       throw new OccupiedUsernameMinkCeption();
     } else {
       return saveUser(user);
@@ -21,6 +21,6 @@ public class UserService {
   }
 
   private boolean isUsernameOccupied(String name) {
-    return userRepository.existsUserByName(name);
+    return userRepository.existsUserByUsername(name);
   }
 }
