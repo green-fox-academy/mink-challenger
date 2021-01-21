@@ -26,7 +26,11 @@
         <td th:text="${commitment.challenge?.getName()}"></td>
         <td th:text="${commitment.user?.getUsername()}"></td>
         <td><a th:href="'/editCommitment/' + ${commitment.getId()}">Edit</a></td>
-        <td><form th:action="'/delCommitment/' + ${commitment.getId()}" method="post"><button type="submit">Delete</button></form></td>
+        <td>
+            <form th:action="'/delCommitment/' + ${commitment.getId()}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
     </tr>
 </table>
 

@@ -4,6 +4,8 @@ import challenger.mink.challenges.ChallengeService;
 import challenger.mink.users.UserService;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +19,13 @@ public class CommitmentController {
   private final CommitmentService commitmentService;
   private final ChallengeService challengeService;
   private final UserService userService;
+  private static final Logger logger = LogManager.getLogger(CommitmentController.class);
+
 
   @GetMapping("/commitment")
   public String renderCommitmentPage(Model model, Principal principal) {
     long userId = userService.findUserByName(principal.getName());
+    logger.info("GET/commitment has been called!");
     model.addAttribute("commitments", commitmentService.findAllByUser(userId));
     model.addAttribute("userId", userId);
     model.addAttribute("challenges", challengeService.findAll());
@@ -29,6 +34,7 @@ public class CommitmentController {
 
   @GetMapping("/commitment/{id}")
   public String renderCommitmentPage(Model model, @PathVariable long id) {
+    logger.info("GET/commitment/{id} has been called!");
     model.addAttribute("commitments", commitmentService.findAllByUser(id));
     model.addAttribute("userId", id);
     model.addAttribute("challenges", challengeService.findAll());
@@ -38,12 +44,14 @@ public class CommitmentController {
   @PostMapping("/addcommitment/{userId}")
   public String addCommitment(@PathVariable long userId, String description, String date,
                               Long challengeId) {
+    logger.info("POST/addcommitment has been called!");
     commitmentService.addCommitment(userId, description, date, challengeId);
     return "redirect:/commitment/" + userId;
   }
 
   @GetMapping("/editCommitment/{commitmentId}")
   public String renderEditCommitmentPage(Model model, @PathVariable long commitmentId) {
+    logger.info("GET/editCommitment has been called!");
     Commitment commitment = commitmentService.getCommitmentById(commitmentId);
     model
         .addAttribute("commitments", commitmentService.findAllByUser(commitment.getUser().getId()));
@@ -54,6 +62,7 @@ public class CommitmentController {
   @PostMapping("/saveCommitment/{commitmentId}")
   public String editCommitment(@ModelAttribute("currentCommitment") Commitment currentCommitment,
                                @PathVariable long commitmentId) {
+    logger.info("POST/saveCommitment has been called!");
     commitmentService.saveChangedCommitment(commitmentId, currentCommitment);
     return "redirect:/commitment/" +
         commitmentService.getCommitmentById(commitmentId).getUser().getId();

@@ -47,12 +47,14 @@ public class CommitmentService {
   }
 
   public void deleteCommitment(long commitmentId) {
-    Commitment commitment = commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
+    Commitment commitment =
+        commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
     commitmentRepository.delete(commitment);
   }
 
   public long getUserIdByCommitmentId(long commitmentId) {
-    Commitment commitment = commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
+    Commitment commitment =
+        commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
     return commitment.getUser().getId();
   }
 }

@@ -22,7 +22,11 @@
         <td th:text="${commitment.isDone()}"></td>
         <td th:text="${commitment.challenge?.getId()}"></td>
         <td><a th:href="'/editCommitment/' + ${commitment.getId()}">Edit</a></td>
-        <td><form th:action="'/delCommitment/' + ${commitment.getId()}" method="post"><button type="submit">Delete</button></form></td>
+        <td>
+            <form th:action="'/delCommitment/' + ${commitment.getId()}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
     </tr>
 </table>
 <h2>Edit chosen commitment</h2>
