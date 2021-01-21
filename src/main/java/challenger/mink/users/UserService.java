@@ -1,17 +1,20 @@
 package challenger.mink.users;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
   private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
   public User registerNewUser(User user) throws OccupiedUsernameMinkCeption {
     if (isUsernameOccupied(user.getUsername())) {
       throw new OccupiedUsernameMinkCeption();
     } else {
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
       return saveUser(user);
     }
   }
@@ -23,6 +26,8 @@ public class UserService {
   private boolean isUsernameOccupied(String name) {
     return userRepository.existsUserByUsername(name);
   }
+
+  public long findUserByName(String name) {
+    return userRepository.findByUsername(name).getId();
+  }
 }
-//jdbc:mysql://localhost:3306/mink?serverTimezone=UTC
-//jdbc:mysql://localhost:3306/employee_database?useSSL=false

@@ -29,7 +29,7 @@ public class Challenge {
   private LocalDate startDate;
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate endDate;
-  private Long minimumCommitment;
+  private long minimumCommitment;
   @OneToMany(mappedBy = "challenge")
   private List<Commitment> commitmentList;
   @OneToMany(mappedBy = "challenge")
