@@ -1,13 +1,13 @@
 CREATE TABLE users
 (
     id           BIGINT AUTO_INCREMENT,
-    name         VARCHAR(50) NOT NULL UNIQUE,
+    username     VARCHAR(50) NOT NULL UNIQUE,
     challenge_id BIGINT,
     PRIMARY KEY (id)
     #FOREIGN KEY (challenge_id) REFERENCES challenges (id)
 );
 
-INSERT INTO users(name, challenge_id)
+INSERT INTO users(username, challenge_id)
 VALUES ('Bela', 2),
        ('Gazsi', 1);
 
