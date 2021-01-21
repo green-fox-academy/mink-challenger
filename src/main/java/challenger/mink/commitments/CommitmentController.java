@@ -1,10 +1,11 @@
 package challenger.mink.commitments;
 
 import challenger.mink.challenges.ChallengeService;
+import challenger.mink.users.UserService;
+import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class CommitmentController {
   private final CommitmentService commitmentService;
   private final ChallengeService challengeService;
+  private final UserService userService;
 
-  @GetMapping("/commitment/{userId}")
-  public String renderCommitmentPage(Model model, @PathVariable long userId) {
+  @GetMapping("/commitment")
+  public String renderCommitmentPage(Model model, Principal principal) {
+    long userId = userService.findUserByName(principal.getName());
     model.addAttribute("commitments", commitmentService.findAllByUser(userId));
     model.addAttribute("userId", userId);
+    model.addAttribute("challenges", challengeService.findAll());
+    return "addcommitment.html";
+  }
+
+  @GetMapping("/commitment/{id}")
+  public String renderCommitmentPage(Model model, @PathVariable long id) {
+    model.addAttribute("commitments", commitmentService.findAllByUser(id));
+    model.addAttribute("userId", id);
     model.addAttribute("challenges", challengeService.findAll());
     return "addcommitment.html";
   }
@@ -49,7 +60,7 @@ public class CommitmentController {
   }
 
   @PostMapping("/delCommitment/{commitmentId}")
-  public String delCommitment(@PathVariable long commitmentId){
+  public String delCommitment(@PathVariable long commitmentId) {
     long userId = commitmentService.getUserIdByCommitmentId(commitmentId);
     commitmentService.deleteCommitment(commitmentId);
     return "redirect:/commitment/" + userId;

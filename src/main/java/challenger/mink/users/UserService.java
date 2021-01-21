@@ -26,4 +26,8 @@ public class UserService {
   private boolean isUsernameOccupied(String name) {
     return userRepository.existsUserByUsername(name);
   }
+
+  public long findUserByName(String name) {
+    return userRepository.findByUsername(name).getId();
+  }
 }
