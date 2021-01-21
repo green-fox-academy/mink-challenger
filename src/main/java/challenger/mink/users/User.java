@@ -2,7 +2,6 @@ package challenger.mink.users;
 
 import challenger.mink.challenges.Challenge;
 import challenger.mink.commitments.Commitment;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,13 +24,11 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   private String name;
+  private String password;
+  private String email;
   @OneToMany(mappedBy = "user")
   private List<Commitment> commitmentList;
   @ManyToOne
   private Challenge challenge;
 
-  public User(String name) {
-    this.name = name;
-    this.commitmentList = new ArrayList<Commitment>();
-  }
 }
