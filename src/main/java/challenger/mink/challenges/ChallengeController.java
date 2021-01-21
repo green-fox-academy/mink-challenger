@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ChallengeController {
   private final ChallengeService challengeService;
 
+  @GetMapping ("/")
+  public String renderMainPage () {
+    return "main.html";
+  }
+
   @GetMapping("/admin")
   public String renderAdminPage(Model model) {
     model.addAttribute("challenges", challengeService.findAll());
