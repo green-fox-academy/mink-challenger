@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ChallengeController {
   private final ChallengeService challengeService;
 
-  @GetMapping ("/admin")
-    public String renderAdminPage (Model model){
-      model.addAttribute("challenges",challengeService.findAll());
-      return "admin.html";
-    }
+  @GetMapping("/admin")
+  public String renderAdminPage(Model model) {
+    model.addAttribute("challenges", challengeService.findAll());
+    model.addAttribute("challenge", new Challenge());
+    return "admin.html";
+  }
 
-    @PostMapping("/addchallenge")
-  public String addChallenge(Model model, @ModelAttribute Challenge challenge){
-    model.addAttribute("newChallenge", new Challenge());
+  @PostMapping("/addchallenge")
+  public String addChallenge(@ModelAttribute ("challenge") Challenge challenge) {
     challengeService.addChallenge(challenge);
     return "redirect:/admin";
-    }
+  }
 }

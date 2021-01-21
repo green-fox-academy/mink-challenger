@@ -14,26 +14,37 @@
     <th>Description</th>
     <th>Date</th>
     <th>Done?</th>
+    <th>Challenge Name</th>
+    <th>User Name</th>
+
     </thead>
     <tr th:each="commitment : ${commitments}">
         <td th:text="${commitment.getId()}"></td>
         <td th:text="${commitment.getDescription()}"></td>
         <td th:text="${commitment.getDate()}"></td>
         <td th:text="${commitment.isDone()}"></td>
-        <td><a th:href="'/editCommitment/' + ${commitment.getId()}"><span>Edit</span></a></td>
+        <td th:text="${commitment.challenge?.getName()}"></td>
+        <td th:text="${commitment.user?.getName()}"></td>
+        <td><a th:href="'/editCommitment/' + ${commitment.getId()}">Edit</a></td>
     </tr>
 </table>
 <h2>Create a new commitment</h2>
-<form th:action="/addCommitment" method="post">
+<form th:action="'/addcommitment/' + ${userId}" method="post">
     <div>
-        <label for="newCommitment">Commitment Description</label>
-        <input type="text" name="newCommitment" id="newCommitment" th:field="*{description}"><br>
+        <label for="descripition">Commitment Description</label>
+        <input type="text" id="descripition" name="description"><br>
         <label for="date">Date</label>
-        <input type="date" id="date" name="commitment"
+        <input type="date" id="date"
                value="2021-01-01"
-               min="2021-01-01" max="2025-12-31"><br>
+               min="2021-01-01" max="2025-12-31" name="date"><br>
+        <label for="challenge">Choose the challenge: </label>
+        <select id="challenge" name="challengeId">
+            <option th:each="challenge : ${challenges}" th:value="${challenge.getId()}"
+                    th:text="${challenge.getName()}" ></option>
+        </select>
     </div>
     <button type="submit" class="btn-dark">Submit</button>
 </form>
+
 </body>
 </html>

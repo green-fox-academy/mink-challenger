@@ -13,18 +13,21 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-@Table (name = "challenges")
+@Table(name = "challenges")
 public class Challenge {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   private String name;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate startDate;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate endDate;
   private long minimumCommitment;
   @OneToMany(mappedBy = "challenge")
@@ -32,7 +35,7 @@ public class Challenge {
   @OneToMany(mappedBy = "challenge")
   private List<User> userList;
 
-  public Challenge(String name, LocalDate startDate, LocalDate endDate, int minimumCommitment) {
+  public Challenge(String name, LocalDate startDate, LocalDate endDate, long minimumCommitment) {
     this.name = name;
     this.startDate = startDate;
     this.endDate = endDate;

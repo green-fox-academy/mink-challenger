@@ -14,8 +14,6 @@
         <th>Name</th>
         <th>Start date</th>
         <th>End date</th>
-        <th>Description</th>
-        <th>Users</th>
         <th>Edit challenge</th>
     </tr>
     <tr th:each="challenge:${challenges}">
@@ -23,26 +21,26 @@
         <td th:text="${challenge.getName()}"></td>
         <td th:text="${challenge.getStartDate()}"></td>
         <td th:text="${challenge.getEndDate()}"></td>
-        <td th:text="${challenge.getDescription()}"></td>
-        <td th:text="${challenge.getUsers()}"></td>
-        <th th:href="'/editChallenge/' + ${challenge.getId()}">Edit</th>
+        <!--        <td th:text="${challenge.getUsers()}"></td>-->
+        <th>Edit</th>
     </tr>
 </table>
 <h2>Create a new challenge</h2>
-<form class="form-group" th:action="addChallenge" th:method="post" th:object="${challenge}">
+<form class="form-group" th:action="addchallenge" th:method="post" th:object="${challenge}">
     <div>
-        <label for="newChallenge">Challenge Descripton</label>
-        <input type="text" name="newChallenge" id="newChallenge" th:field="*{name}"><br>
+        <input type="hidden" th:field="*{id}">
+        <label for="challenge">Challenge Descripton</label>
+        <input type="text" name="challenge" id="challenge" th:field="*{name}"><br>
         <label for="start">Start date</label>
-        <input type="date" id="start" name="challenge-start"
+        <input type="date" id="start"
                value="2021-01-01"
                min="2021-01-01" max="2025-12-31" th:field="*{startDate}"><br>
         <label for="end">End date</label>
-        <input type="date" id="end" name="challenge-end"
+        <input type="date" id="end"
                value="2021-01-01"
                min="2021-01-01" max="2025-12-31" th:field="*{endDate}"><br>
         <label for="minimumCommitment">Number of minimum commitments</label>
-        <input type="number" min=1 id="minimumCommitment" name="minimumCommitment" th:field="*{minimumCommitment}"><br>
+        <input type="number" min=1 id="minimumCommitment" name="challenge" th:field="*{minimumCommitment}"><br>
     </div>
     <button type="submit" class="btn-dark">Submit</button>
 </form>
