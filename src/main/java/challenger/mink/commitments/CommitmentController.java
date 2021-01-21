@@ -46,4 +46,11 @@ public class CommitmentController {
     return "redirect:/commitment/" +
         commitmentService.getCommitmentById(commitmentId).getUser().getId();
   }
+
+  @PostMapping("/delCommitment/{commitmentId}")
+  public String delCommitment(@PathVariable long commitmentId){
+    long userId = commitmentService.getUserIdByCommitmentId(commitmentId);
+    commitmentService.deleteCommitment(commitmentId);
+    return "redirect:/commitment/" + userId;
+  }
 }

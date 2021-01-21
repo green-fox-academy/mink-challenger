@@ -41,7 +41,18 @@ public class CommitmentService {
     Commitment commitment =
         commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
     commitment.setDescription(currentCommitment.getDescription());
-    commitment.setDate(currentCommitment.getDate());
+    commitment.setDate(currentCommitment.getDate().plusDays(1));
+    commitment.setDone(currentCommitment.isDone());
     commitmentRepository.save(commitment);
+  }
+
+  public void deleteCommitment(long commitmentId) {
+    Commitment commitment = commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
+    commitmentRepository.delete(commitment);
+  }
+
+  public long getUserIdByCommitmentId(long commitmentId) {
+    Commitment commitment = commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
+    return commitment.getUser().getId();
   }
 }
