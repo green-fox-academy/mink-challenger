@@ -1,6 +1,7 @@
 package challenger.mink.users;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +16,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
   User findByUsername(@Param("username") String username);
 
   boolean existsUserByUsername(String username);
+
+  Optional<User> findUserByUuid(String uuid);
+
+  boolean existsUserByEmail(String email);
+
+
 }

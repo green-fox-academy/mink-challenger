@@ -3,6 +3,7 @@ package challenger.mink.users;
 import challenger.mink.challenges.Challenge;
 import challenger.mink.commitments.Commitment;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,11 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@NoArgsConstructor
 @Getter
 @Setter
 @Table(name = "users")
@@ -30,5 +29,12 @@ public class User {
   private List<Commitment> commitmentList;
   @ManyToOne
   private Challenge challenge;
+  private String uuid;
+  @Column(name = "email_verified")
+  private boolean emailVerified;
+
+  public User(){
+    this.emailVerified = false;
+  }
 
 }
