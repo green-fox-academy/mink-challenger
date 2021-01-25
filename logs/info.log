@@ -578,3 +578,45 @@ Caused by: java.sql.SQLNonTransientConnectionException: Public Key Retrieval is 
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1847) ~[spring-beans-5.3.3.jar:5.3.3]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1784) ~[spring-beans-5.3.3.jar:5.3.3]
 	... 24 more
+2021-01-25 20:58:29.622 [restartedMain] INFO  challenger.mink.MinkApplication - Starting MinkApplication using Java 1.8.0_261 on LAPTOP-N0CQE9IH with PID 9984 (C:\Repos Inside\chal\build\classes\java\main started by mlest in C:\Repos Inside\chal)
+2021-01-25 20:58:29.637 [restartedMain] INFO  challenger.mink.MinkApplication - No active profile set, falling back to default profiles: default
+2021-01-25 20:58:29.731 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-01-25 20:58:29.731 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-01-25 20:58:30.716 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-01-25 20:58:30.810 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 90 ms. Found 3 JPA repository interfaces.
+2021-01-25 20:58:31.763 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2021-01-25 20:58:31.779 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2021-01-25 20:58:31.779 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2021-01-25 20:58:31.779 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-01-25 20:58:31.919 [restartedMain] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2021-01-25 20:58:31.919 [restartedMain] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2188 ms
+2021-01-25 20:58:32.013 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2021-01-25 20:58:32.279 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2021-01-25 20:58:32.279 [restartedMain] INFO  org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/mink?serverTimezone=UTC&useSSL=false'
+2021-01-25 20:58:32.451 [restartedMain] INFO  org.flywaydb.core.internal.license.VersionPrinter - Flyway Community Edition 7.1.1 by Redgate
+2021-01-25 20:58:32.529 [restartedMain] INFO  org.flywaydb.core.internal.database.base.DatabaseType - Database: jdbc:mysql://localhost:3306/mink (MySQL 8.0)
+2021-01-25 20:58:32.670 [restartedMain] INFO  org.flywaydb.core.internal.command.DbValidate - Successfully validated 5 migrations (execution time 00:00.066s)
+2021-01-25 20:58:32.685 [restartedMain] INFO  org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory - Creating Schema History table `mink`.`flyway_schema_history` ...
+2021-01-25 20:58:32.857 [restartedMain] INFO  org.flywaydb.core.internal.command.DbMigrate - Current version of schema `mink`: << Empty Schema >>
+2021-01-25 20:58:32.873 [restartedMain] INFO  org.flywaydb.core.internal.command.DbMigrate - Migrating schema `mink` to version "1 - create database"
+2021-01-25 20:58:33.013 [restartedMain] INFO  org.flywaydb.core.internal.command.DbMigrate - Migrating schema `mink` to version "2 - add minimumCommitment"
+2021-01-25 20:58:33.045 [restartedMain] INFO  org.flywaydb.core.internal.command.DbMigrate - Migrating schema `mink` to version "3 - modify users table"
+2021-01-25 20:58:33.138 [restartedMain] INFO  org.flywaydb.core.internal.command.DbMigrate - Migrating schema `mink` to version "4 - add more challenge"
+2021-01-25 20:58:33.170 [restartedMain] INFO  org.flywaydb.core.internal.command.DbMigrate - Migrating schema `mink` to version "5 - user email verification"
+2021-01-25 20:58:33.217 [restartedMain] INFO  org.flywaydb.core.internal.command.DbMigrate - Successfully applied 5 migrations to schema `mink` (execution time 00:00.383s)
+2021-01-25 20:58:33.295 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-01-25 20:58:33.373 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.27.Final
+2021-01-25 20:58:33.592 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-01-25 20:58:33.748 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2021-01-25 20:58:34.530 [restartedMain] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-01-25 20:58:34.545 [restartedMain] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-01-25 20:58:34.592 [restartedMain] INFO  org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2021-01-25 20:58:35.264 [restartedMain] WARN  org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-01-25 20:58:35.483 [restartedMain] INFO  org.springframework.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@42e69320, org.springframework.security.web.context.SecurityContextPersistenceFilter@5ea99de5, org.springframework.security.web.header.HeaderWriterFilter@1d32aec9, org.springframework.security.web.authentication.logout.LogoutFilter@399cdd30, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@3470c3bf, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1467f792, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@75fdcf9e, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@1a258d02, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3ca46f66, org.springframework.security.web.session.SessionManagementFilter@4a3ef786, org.springframework.security.web.access.ExceptionTranslationFilter@7d5a545a, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@40177aef]
+2021-01-25 20:58:35.624 [restartedMain] INFO  org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2021-01-25 20:58:36.155 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2021-01-25 20:58:36.171 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2021-01-25 20:58:36.186 [restartedMain] INFO  challenger.mink.MinkApplication - Started MinkApplication in 7.019 seconds (JVM running for 8.564)
+2021-01-25 20:58:43.857 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-01-25 20:58:43.857 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2021-01-25 20:58:43.858 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
