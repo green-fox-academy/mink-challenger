@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Entity
 @NoArgsConstructor
 @Getter
@@ -30,5 +31,12 @@ public class User {
   private List<Commitment> commitmentList;
   @ManyToOne
   private Challenge challenge;
+  private UserType userType;
 
+  public User(String username, String password, String email) {
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.userType = UserType.USER;
+  }
 }
