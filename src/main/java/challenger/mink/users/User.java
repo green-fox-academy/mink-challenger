@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Entity
 @Getter
 @Setter
@@ -36,5 +37,12 @@ public class User {
   public User(){
     this.emailVerified = false;
   }
+  private UserType userType;
 
+  public User(String username, String password, String email) {
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.userType = UserType.USER;
+  }
 }
