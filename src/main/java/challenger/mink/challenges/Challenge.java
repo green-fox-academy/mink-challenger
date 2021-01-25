@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -33,6 +35,7 @@ public class Challenge {
   @OneToMany(mappedBy = "challenge")
   private List<Commitment> commitmentList;
   @OneToMany(mappedBy = "challenge")
+  @Cascade(CascadeType.PERSIST)
   private List<User> userList;
 
   public Challenge(String name, LocalDate startDate, LocalDate endDate, Long minimumCommitment) {

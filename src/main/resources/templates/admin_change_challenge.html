@@ -15,17 +15,19 @@
         <th>Start date</th>
         <th>End date</th>
         <th>Edit challenge</th>
+        <th>Delete challenge</th>
     </tr>
     <tr th:each="challenge:${challenges}">
         <td th:text="${challenge.getId()}"></td>
         <td th:text="${challenge.getName()}"></td>
         <td th:text="${challenge.getStartDate()}"></td>
         <td th:text="${challenge.getEndDate()}"></td>
-        <th>
+        <td>
             <form th:action="'/admin/' + ${challenge.getId()}">
                 <button class="page-link">Edit</button>
             </form>
-        </th>
+        </td>
+        <td><form th:action="'/delChallenge/' + ${challenge.getId()}" method="post"><button type="submit">Delete</button></form></td>
     </tr>
 </table>
 <h2 th:object="${currentChallenge}">Edit challenge</h2>
