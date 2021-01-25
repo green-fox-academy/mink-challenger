@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Resgister page</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Registration</h1>
-<p th:text="${error}" style="color: red"></p>
-<form action="/register" th:object="${user}" method="post">
-    <label for="username">Username</label>
-    <input type="text" th:field="*{username}" id="username" name="username">
-    <br>
-    <label for="password">Password</label>
-    <input type="password" th:field="*{password}" id="password" name="password">
-    <br>
-    <label for="email">Email</label>
-    <input type="email" th:field="*{email}" id="email" name="email">
-    <br>
-    <input type="submit" value="Register" id="">
-</form>
+<div class="container">
+    <form class="form-signin" action="/register" th:object="${user}" method="post">
+        <h2 class="form-signin-heading">Registration</h2>
+        <p>
+            <label for="username" class="sr-only">Username</label>
+            <input type="text" th:field="*{username}" id="username" name="username" class="form-control"
+                   placeholder="Username" required="" autofocus="">
+        </p>
+        <p>
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" th:field="*{password}" id="password" name="password" class="form-control"
+                   placeholder="Password" required="">
+        </p>
+        <p>
+            <label for="password" class="sr-only">E-mail</label>
+            <input type="email" th:field="*{email}" id="email" name="email" class="form-control" placeholder="E-mail"
+                   required="">
+        </p>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+    </form>
+</div>
 </body>
-</html>
