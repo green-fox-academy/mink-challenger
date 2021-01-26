@@ -14,10 +14,10 @@ VALUES ('Bela', '$2y$12$jnlHdPuXJ04ExbPEWxDMjuURSrzurWnWCsbf/RSxxWxLEuYJzuttW', 
 
 CREATE TABLE challenges
 (
-    id            BIGINT AUTO_INCREMENT,
-    name          VARCHAR(50) NOT NULL UNIQUE,
-    start_date    DATE,
-    end_date      DATE,
+    id                 BIGINT AUTO_INCREMENT,
+    name               VARCHAR(50) NOT NULL UNIQUE,
+    start_date         DATE,
+    end_date           DATE,
     minimum_commitment BIGINT,
     PRIMARY KEY (id)
 );

@@ -1,14 +1,18 @@
 package challenger.mink.security;
 
 import challenger.mink.users.User;
-import java.util.Arrays;
+import challenger.mink.users.roles.Role;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -18,8 +22,12 @@ public class MyUserDetails implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
-    return Arrays.asList(authority);
+    Set<Role> roles = user.getRoles();
+    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    for (Role role : roles) {
+      authorities.add(new SimpleGrantedAuthority(role.getName()));
+    }
+    return authorities;
   }
 
   @Override
@@ -51,4 +59,5 @@ public class MyUserDetails implements UserDetails {
   public boolean isEnabled() {
     return user.isEmailVerified();
   }
+
 }

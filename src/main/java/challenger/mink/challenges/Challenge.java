@@ -1,7 +1,6 @@
 package challenger.mink.challenges;
 
 import challenger.mink.commitments.Commitment;
-import challenger.mink.users.User;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Entity;

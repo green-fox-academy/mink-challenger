@@ -32,7 +32,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
     authProvider.setUserDetailsService(userDetailsService());
     authProvider.setPasswordEncoder(getPasswordEncoder());
-
     return authProvider;
   }
 
@@ -45,7 +44,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/", "/login", "/register", "/main", "/verify/{uuid}")
+        .antMatchers("/", "/login", "/register", "/main", "/verify/{uuid}", "addcommitment",
+            "/editcommitment", "/waitforyouremail")
+        .hasAuthority("USER")
+        .antMatchers("/admin", "/admin_change_challenge")
+        .hasAuthority("ADMIN")
+        .antMatchers("/", "/login", "/register", "/main", "/verify/{uuid}", "addcommitment",
+            "/editcommitment", "/waitforyouremail")
         .permitAll()
         .anyRequest()
         .authenticated()
