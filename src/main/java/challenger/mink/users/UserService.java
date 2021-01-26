@@ -2,6 +2,7 @@ package challenger.mink.users;
 
 import challenger.mink.users.minkceptions.OccupiedEmailMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedUsernameMinkCeption;
+import challenger.mink.users.roles.RoleService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final RoleService roleService;
   private final MailGun mailGun;
 
   public User registerNewUser(User user)
@@ -24,9 +26,10 @@ public class UserService {
     } else {
       user.setUuid(generateUuid());
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setUserType(UserType.USER);
+      user.getRoles().add(roleService.findRoleByName("USER"));
       saveUser(user);
       mailGun.sendSimpleMessage(user.getUuid());
+
       return saveUser(user);
     }
   }

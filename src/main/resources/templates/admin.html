@@ -29,7 +29,11 @@
                 <button class="page-link">Edit</button>
             </form>
         </td>
-        <td><form th:action="'/delChallenge/' + ${challenge.getId()}" method="post"><button type="submit">Delete</button></form></td>
+        <td>
+            <form th:action="'/delChallenge/' + ${challenge.getId()}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
 
     </tr>
 </table>
