@@ -22,6 +22,7 @@ public class UserService {
     } else {
       user.setUuid(generateUuid());
       user.setPassword(passwordEncoder.encode(user.getPassword()));
+      user.setUserType(UserType.USER);
       saveUser(user);
       mailGun.sendSimpleMessage(user.getUuid());
       return saveUser(user);

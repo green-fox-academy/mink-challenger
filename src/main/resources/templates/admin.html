@@ -14,6 +14,7 @@
         <th>Name</th>
         <th>Start date</th>
         <th>End date</th>
+        <th>Minimum Commitmens</th>
         <th>Edit challenge</th>
         <th>Delete challenge</th>
     </tr>
@@ -22,6 +23,7 @@
         <td th:text="${challenge.getName()}"></td>
         <td th:text="${challenge.getStartDate()}"></td>
         <td th:text="${challenge.getEndDate()}"></td>
+        <td th:text="${challenge.getMinimumCommitment}"></td>
         <td>
             <form th:action="'/admin/' + ${challenge.getId()}">
                 <button class="page-link">Edit</button>
