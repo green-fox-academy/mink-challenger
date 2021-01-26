@@ -1,5 +1,7 @@
 package challenger.mink.users;
 
+import challenger.mink.users.minkceptions.OccupiedEmailMinkCeption;
+import challenger.mink.users.minkceptions.OccupiedUsernameMinkCeption;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +24,7 @@ public class UserService {
     } else {
       user.setUuid(generateUuid());
       user.setPassword(passwordEncoder.encode(user.getPassword()));
+      user.setUserType(UserType.USER);
       saveUser(user);
       mailGun.sendSimpleMessage(user.getUuid());
       return saveUser(user);

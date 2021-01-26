@@ -1,5 +1,6 @@
 package challenger.mink.challenges;
 
+import challenger.mink.challenges.minkceptions.NoSuchChallengeMinkCeption;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -27,9 +28,8 @@ public class ChallengeService {
     return challengeRepository.findById(id).orElseThrow(NoSuchChallengeMinkCeption::new);
   }
 
-  public void deleteChallenge(long challengeId) {
-    Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(
-        NoSuchElementException::new);
+  public void deleteChallenge(long challengeId) throws NoSuchChallengeMinkCeption {
+    Challenge challenge = getChallengeById(challengeId);
     if(LocalDate.now().isBefore(challenge.getStartDate()))
     challengeRepository.delete(challenge);
   }
