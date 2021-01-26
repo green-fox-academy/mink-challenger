@@ -18,18 +18,25 @@
     <th>Id</th>
     <th>Description</th>
     <th>Date</th>
-    <th>Done?</th>
     <th>Challenge Name</th>
-    <th>User Name</th>
-
+    <th>Done?</th>
+    <th>Set it done!</th>
+    <th>Edit</th>
+    <th>Delete</th>
     </thead>
     <tr th:each="commitment : ${commitments}">
         <td th:text="${commitment.getId()}"></td>
         <td th:text="${commitment.getDescription()}"></td>
         <td th:text="${commitment.getDate()}"></td>
-        <td th:text="${commitment.isDone()}"></td>
+
         <td th:text="${commitment.challenge?.getName()}"></td>
         <td th:text="${commitment.user?.getUsername()}"></td>
+        <td th:text="${commitment.isDone()}"></td>
+        <td>
+            <form th:action="'/setCommitmentDone/' + ${commitment.getId()}" method="post">
+                <button type="submit">Set done!</button>
+            </form>
+        </td>
         <td><a th:href="'/editCommitment/' + ${commitment.getId()}">Edit</a></td>
         <td>
             <form th:action="'/delCommitment/' + ${commitment.getId()}" method="post">

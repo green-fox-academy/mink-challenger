@@ -5,6 +5,8 @@ import challenger.mink.commitments.Commitment;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,9 +29,8 @@ public class User {
   private String password;
   private String email;
   @OneToMany(mappedBy = "user")
-  private List<Commitment> commitmentList;
-  @ManyToOne
-  private Challenge challenge;
+  private List<Commitment> commitments;
+  @Enumerated(EnumType.STRING)
   private UserType userType;
   private String uuid;
   @Column(name = "email_verified")

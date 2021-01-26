@@ -13,15 +13,19 @@
     <th>Id</th>
     <th>Description</th>
     <th>Date</th>
+    <th>Challenge</th>
+    <th>Edit</th>
     <th>Done?</th>
+    <th>Delete</th>
     </thead>
     <tr th:each="commitment : ${commitments}">
         <td th:text="${commitment.getId()}"></td>
         <td th:text="${commitment.getDescription()}"></td>
         <td th:text="${commitment.getDate()}"></td>
-        <td th:text="${commitment.isDone()}"></td>
-        <td th:text="${commitment.challenge?.getId()}"></td>
+        <td th:text="${commitment.challenge?.getName()}"></td>
         <td><a th:href="'/editCommitment/' + ${commitment.getId()}">Edit</a></td>
+        <td th:text="${commitment.isDone()}"></td>
+
         <td>
             <form th:action="'/delCommitment/' + ${commitment.getId()}" method="post">
                 <button type="submit">Delete</button>
@@ -39,8 +43,6 @@
         <input type="date" id="date"
                value="2021-01-01"
                min="2021-01-01" max="2025-12-31" th:field="*{date}"><br>
-        <label for="checkbox">Done already? </label>
-        <input type="checkbox" id="checkbox" name="done" th:checked="*{done}" th:field="*{done}">
     </div>
     <button type="submit" class="btn-dark">Submit</button>
 </form>
