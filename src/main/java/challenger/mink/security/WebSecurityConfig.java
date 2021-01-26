@@ -53,27 +53,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
-//        .authorizeRequests()
-//        .antMatchers("/").permitAll();
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .addFilter(
-            new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig,
-                secretKey))
-        .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),
-            JwtUsernameAndPasswordAuthenticationFilter.class)
         .authorizeRequests()
-        .antMatchers("addcommitment", "/editcommitment", "/waitforyouremail")
-        .hasAnyAuthority("USER", "ADMIN")
-        .antMatchers("/admin", "/admin_change_challenge")
-        .hasAuthority("ADMIN")
-        .antMatchers("/", "/v2/api-docs", "/login", "/register", "/main", "/verify/{uuid}",
-            "/verify/**", "/css/*", "/js/*")
-
-        .permitAll()
-        .anyRequest()
-        .authenticated();
+        .antMatchers("/").permitAll();
+//        .sessionManagement()
+//        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//        .and()
+//        .addFilter(
+//            new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig,
+//                secretKey))
+//        .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),
+//            JwtUsernameAndPasswordAuthenticationFilter.class)
+//        .authorizeRequests()
+//        .antMatchers("addcommitment", "/editcommitment", "/waitforyouremail")
+//        .hasAnyAuthority("USER", "ADMIN")
+//        .antMatchers("/admin", "/admin_change_challenge")
+//        .hasAuthority("ADMIN")
+//        .antMatchers("/", "/v2/api-docs", "/login", "/register", "/main", "/verify/{uuid}",
+//            "/verify/**", "/css/*", "/js/*")
+//
+//        .permitAll()
+//        .anyRequest()
+//        .authenticated();
   }
 
   @Override
