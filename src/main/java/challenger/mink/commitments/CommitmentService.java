@@ -2,8 +2,11 @@ package challenger.mink.commitments;
 
 import challenger.mink.challenges.Challenge;
 import challenger.mink.challenges.ChallengeRepository;
+import challenger.mink.challenges.minkceptions.NoSuchChallengeMinkCeption;
+import challenger.mink.commitments.minkceptions.NoSuchCommitmentMinkCeption;
 import challenger.mink.users.User;
 import challenger.mink.users.UserRepository;
+import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,11 +28,12 @@ public class CommitmentService {
     return commitmentRepository.findByUserId(userId);
   }
 
-  public void addCommitment(long userId, String description, String date, Long challengeId) {
+  public void addCommitment(long userId, String description, String date, Long challengeId)
+      throws NoSuchUserMinkCeption, NoSuchChallengeMinkCeption {
     LocalDate localDate = LocalDate.parse(date);
-    User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+    User user = userRepository.findById(userId).orElseThrow(NoSuchUserMinkCeption::new);
     Challenge challenge = challengeRepository.findById(challengeId)
-        .orElseThrow(NoSuchElementException::new);
+        .orElseThrow(NoSuchChallengeMinkCeption::new);
 
     if (!localDate.isBefore(challenge.getStartDate()) &&
         !localDate.isAfter(challenge.getEndDate()) &&
@@ -39,13 +43,14 @@ public class CommitmentService {
     }
   }
 
-  public Commitment getCommitmentById(long id) {
-    return commitmentRepository.findById(id).orElseThrow(NoSuchElementException::new);
+  public Commitment getCommitmentById(long id) throws NoSuchCommitmentMinkCeption {
+    return commitmentRepository.findById(id)
+        .orElseThrow(NoSuchCommitmentMinkCeption::new);
   }
 
-  public void saveChangedCommitment(long commitmentId, Commitment currentCommitment) {
-    Commitment commitment =
-        commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
+  public void saveChangedCommitment(long commitmentId, Commitment currentCommitment)
+      throws NoSuchCommitmentMinkCeption {
+    Commitment commitment = getCommitmentById(commitmentId);
     if (!currentCommitment.getDate().isBefore(commitment.getChallenge().getStartDate()) &&
         !currentCommitment.getDate().isAfter(commitment.getChallenge().getEndDate()) &&
         LocalDate.now().isBefore(commitment.getChallenge().getStartDate())) {
@@ -56,9 +61,8 @@ public class CommitmentService {
     }
   }
 
-  public void setCommitmentDone(long commitmentId) {
-    Commitment commitment =
-        commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
+  public void setCommitmentDone(long commitmentId) throws NoSuchCommitmentMinkCeption {
+    Commitment commitment = getCommitmentById(commitmentId);
     if (!LocalDate.now().isBefore(commitment.getDate()) &&
         !LocalDate.now().isAfter(commitment.getChallenge().getEndDate().plusDays(1))) {
       commitment.setDone(true);
@@ -66,17 +70,15 @@ public class CommitmentService {
     }
   }
 
-  public void deleteCommitment(long commitmentId) {
+  public void deleteCommitment(long commitmentId) throws NoSuchCommitmentMinkCeption {
     Commitment commitment =
-        commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
+        getCommitmentById(commitmentId);
     if (LocalDate.now().isBefore(commitment.getChallenge().getStartDate())) {
       commitmentRepository.delete(commitment);
     }
   }
 
-  public long getUserIdByCommitmentId(long commitmentId) {
-    Commitment commitment =
-        commitmentRepository.findById(commitmentId).orElseThrow(NoSuchElementException::new);
-    return commitment.getUser().getId();
+  public long getUserIdByCommitmentId(long commitmentId) throws NoSuchCommitmentMinkCeption {
+    return getCommitmentById(commitmentId).getUser().getId();
   }
 }

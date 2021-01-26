@@ -1,6 +1,8 @@
 package challenger.mink.users;
 
-import challenger.mink.security.MyUserDetails;
+import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
+import challenger.mink.users.minkceptions.OccupiedEmailMinkCeption;
+import challenger.mink.users.minkceptions.OccupiedUsernameMinkCeption;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

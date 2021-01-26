@@ -1,4 +1,4 @@
-package challenger.mink.challenges;
+package challenger.mink.challenges.minkceptions;
 
 import challenger.mink.exceptions.MinkCeption;
 import org.springframework.http.HttpStatus;

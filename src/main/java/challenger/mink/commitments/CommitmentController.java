@@ -1,9 +1,13 @@
 package challenger.mink.commitments;
 
 import challenger.mink.challenges.ChallengeService;
+import challenger.mink.challenges.minkceptions.NoSuchChallengeMinkCeption;
+import challenger.mink.commitments.minkceptions.NoSuchCommitmentMinkCeption;
 import challenger.mink.users.UserService;
+import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -43,14 +47,16 @@ public class CommitmentController {
 
   @PostMapping("/addcommitment/{userId}")
   public String addCommitment(@PathVariable long userId, String description, String date,
-                              Long challengeId) {
+                              Long challengeId)
+      throws NoSuchUserMinkCeption, NoSuchChallengeMinkCeption {
     logger.info("POST/addcommitment has been called!");
     commitmentService.addCommitment(userId, description, date, challengeId);
     return "redirect:/commitment/" + userId;
   }
 
   @GetMapping("/editCommitment/{commitmentId}")
-  public String renderEditCommitmentPage(Model model, @PathVariable long commitmentId) {
+  public String renderEditCommitmentPage(Model model, @PathVariable long commitmentId)
+      throws NoSuchCommitmentMinkCeption {
     logger.info("GET/editCommitment has been called!");
     Commitment commitment = commitmentService.getCommitmentById(commitmentId);
     model
@@ -61,22 +67,24 @@ public class CommitmentController {
 
   @PostMapping("/saveCommitment/{commitmentId}")
   public String editCommitment(@ModelAttribute("currentCommitment") Commitment currentCommitment,
-                               @PathVariable long commitmentId) {
+                               @PathVariable long commitmentId) throws NoSuchCommitmentMinkCeption {
     logger.info("POST/saveCommitment has been called!");
     commitmentService.saveChangedCommitment(commitmentId, currentCommitment);
     return "redirect:/commitment/" +
         commitmentService.getCommitmentById(commitmentId).getUser().getId();
   }
 
+  @SneakyThrows
   @PostMapping("/delCommitment/{commitmentId}")
-  public String delCommitment(@PathVariable long commitmentId) {
+  public String delCommitment(@PathVariable long commitmentId) throws NoSuchCommitmentMinkCeption {
     long userId = commitmentService.getUserIdByCommitmentId(commitmentId);
     commitmentService.deleteCommitment(commitmentId);
     return "redirect:/commitment/" + userId;
   }
 
   @PostMapping("/setCommitmentDone/{commitmentId}")
-  public String setCommitmentDone(@PathVariable long commitmentId) {
+  public String setCommitmentDone(@PathVariable long commitmentId)
+      throws NoSuchCommitmentMinkCeption {
     long userId = commitmentService.getUserIdByCommitmentId(commitmentId);
     commitmentService.setCommitmentDone(commitmentId);
     return "redirect:/commitment/" + userId;

@@ -12,7 +12,7 @@ public class GlobalMinkCeptionHandler {
 
 
   @ExceptionHandler(MinkCeption.class)
-  public ResponseEntity<ErrorResponseDTO> handleTribesException(MinkCeption e) {
+  public ResponseEntity<ErrorResponseDTO> handleMinkCeption(MinkCeption e) {
     logger.error(
         e.getLocalizedMessage());
     ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(e.getMessage());
