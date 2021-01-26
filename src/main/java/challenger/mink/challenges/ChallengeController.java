@@ -23,14 +23,6 @@
 //    return "main.html";
 //  }
 //
-//  @GetMapping("/admin")
-//  public String renderAdminPage(Model model) {
-//    logger.info("GET/admin has been called");
-//    model.addAttribute("challenges", challengeService.findAll());
-//    model.addAttribute("challenge", new Challenge());
-//    return "admin.html";
-//  }
-//
 //  @GetMapping("/admin/{id}")
 //  public String renderAdminWithSpecificChallenge(Model model, @PathVariable long id)
 //      throws NoSuchChallengeMinkCeption {
@@ -38,13 +30,6 @@
 //    model.addAttribute("challenges", challengeService.findAll());
 //    model.addAttribute("currentChallenge", challengeService.getChallengeById(id));
 //    return "admin_change_challenge.html";
-//  }
-//
-//  @PostMapping("/addchallenge")
-//  public String addChallenge(@ModelAttribute("currentChallenge") Challenge challenge) {
-//    logger.info("POST/addchallenge has been called");
-//    challengeService.addChallenge(challenge);
-//    return "redirect:/admin";
 //  }
 //
 //  @PostMapping("/admin/{id}")

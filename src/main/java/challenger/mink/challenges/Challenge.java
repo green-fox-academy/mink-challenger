@@ -1,6 +1,7 @@
 package challenger.mink.challenges;
 
 import challenger.mink.commitments.Commitment;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Entity;
@@ -29,6 +30,7 @@ public class Challenge {
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate endDate;
   private long minimumCommitment;
+  @JsonIgnore
   @OneToMany(mappedBy = "challenge")
   private List<Commitment> commitmentList;
 
