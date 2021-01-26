@@ -32,8 +32,7 @@ public class Challenge {
   private long minimumCommitment;
   @OneToMany(mappedBy = "challenge")
   private List<Commitment> commitmentList;
-  @OneToMany(mappedBy = "challenge", cascade = javax.persistence.CascadeType.PERSIST)
-  private List<User> userList;
+
 
   public Challenge(String name, LocalDate startDate, LocalDate endDate, Long minimumCommitment) {
     this.name = name;
