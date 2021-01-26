@@ -1,5 +1,6 @@
 package challenger.mink.challenges;
 
+import challenger.mink.challenges.minkceptions.NoSuchChallengeMinkCeption;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,7 +61,7 @@ public class ChallengeController {
   }
 
   @PostMapping("/delChallenge/{challengeId}")
-  public String delChallegne(@PathVariable long challengeId) {
+  public String delChallegne(@PathVariable long challengeId) throws NoSuchChallengeMinkCeption {
     challengeService.deleteChallenge(challengeId);
     return "redirect:/admin";
   }

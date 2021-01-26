@@ -1,5 +1,7 @@
 package challenger.mink.users;
 
+import challenger.mink.users.minkceptions.OccupiedEmailMinkCeption;
+import challenger.mink.users.minkceptions.OccupiedUsernameMinkCeption;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
