@@ -1,13 +1,17 @@
 package challenger.mink.commitments;
 
 import challenger.mink.challenges.Challenge;
+import challenger.mink.challenges.ChallengeDAO;
 import challenger.mink.challenges.ChallengeRepository;
 import challenger.mink.challenges.minkceptions.NoSuchChallengeMinkCeption;
 import challenger.mink.commitments.minkceptions.NoSuchCommitmentMinkCeption;
 import challenger.mink.users.User;
 import challenger.mink.users.UserRepository;
 import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
+import java.math.BigInteger;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -80,4 +84,14 @@ public class CommitmentService {
   public long getUserIdByCommitmentId(long commitmentId) throws NoSuchCommitmentMinkCeption {
     return getCommitmentById(commitmentId).getUser().getId();
   }
+
+//  public List<CommitmentDAO> findAllCommitmentDAOByUser(User user) {
+//    List<CommitmentDAO> commitmentDAOs = new ArrayList<>();
+//    for (Object[] tuple : commitmentRepository.findDAOsByUserId(user.getId())) {
+//      CommitmentDAO commitmentDAO =
+//          new CommitmentDAO((BigInteger) tuple[0], (String) tuple[1], (Date) tuple[2], (String) tuple[4], (Boolean) tuple[5]);
+//      commitmentDAOs.add(commitmentDAO);
+//    }
+//    return commitmentDAOs;
+//  }
 }
