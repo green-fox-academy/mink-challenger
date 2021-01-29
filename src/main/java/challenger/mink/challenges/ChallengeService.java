@@ -30,7 +30,9 @@ public class ChallengeService {
 
   public void deleteChallenge(long challengeId) throws NoSuchChallengeMinkCeption {
     Challenge challenge = getChallengeById(challengeId);
-    if(LocalDate.now().isBefore(challenge.getStartDate()))
-    challengeRepository.delete(challenge);
+    if (LocalDate.now().isBefore(challenge.getStartDate())) {
+      challengeRepository.delete(challenge);
+    }
   }
+
 }

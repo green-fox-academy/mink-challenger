@@ -1,25 +1,35 @@
 package challenger.mink.security;
 
-import java.util.concurrent.TimeUnit;
+import challenger.mink.users.UserRepository;
+import javax.crypto.SecretKey;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+  private final SecretKey secretKey;
+  private final JwtConfig jwtConfig;
+  private final UserRepository userRepository;
 
   @Bean
   public UserDetailsService userDetailsService() {
-    return new UserDetailServiceImpl();
+    return new UserDetailServiceImpl(userRepository);
   }
 
   @Bean
@@ -28,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  public DaoAuthenticationProvider authenticationProvider() {
+  public DaoAuthenticationProvider daoAuthenticationProvider() {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
     authProvider.setUserDetailsService(userDetailsService());
     authProvider.setPasswordEncoder(getPasswordEncoder());
@@ -37,40 +47,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.authenticationProvider(authenticationProvider());
+    auth.authenticationProvider(daoAuthenticationProvider());
   }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .addFilter(
+            new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig,
+                secretKey))
+        .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),
+            JwtUsernameAndPasswordAuthenticationFilter.class)
         .authorizeRequests()
-        .antMatchers("/", "/login", "/register", "/main", "/verify/{uuid}", "addcommitment",
-            "/editcommitment", "/waitforyouremail")
-        .hasAuthority("USER")
-        .antMatchers("/admin", "/admin_change_challenge")
+        .antMatchers("addcommitment", "/editcommitment", "/waitforyouremail")
+        .hasAnyAuthority("USER", "ADMIN")
+        .antMatchers("/admin", "/admin_change_challenge", "admin")
         .hasAuthority("ADMIN")
-        .antMatchers("/", "/login", "/register", "/main", "/verify/{uuid}", "addcommitment",
-            "/editcommitment", "/waitforyouremail")
+        .antMatchers("/", "/login", "/register", "/main", "/verify/{uuid}", "/verify/**", "/css/*", "/js/*")
         .permitAll()
         .anyRequest()
-        .authenticated()
-        .and()
-        .formLogin()
-        .loginPage("/login")
-        .permitAll()
-        .defaultSuccessUrl("/commitment", true)
-        .failureUrl("/login?error=true")
-        .and()
-        .rememberMe()
-        .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
-        .and().logout()
-        .logoutUrl("/logout")
-//      .if csrf enabled, clear line below, so logout becomes POST
-        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-        .clearAuthentication(true)
-        .invalidateHttpSession(true)
-        .deleteCookies("JSESSIONID", "remember-me")
-        .logoutSuccessUrl("/login")
-        .permitAll();
+        .authenticated();
   }
 }
