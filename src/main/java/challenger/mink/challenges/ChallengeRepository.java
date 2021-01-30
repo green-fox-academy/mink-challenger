@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
   List<Challenge> findAll();
 
-  @Query (nativeQuery = true, value = "SELECT id, name, start_date, end_date, minimum_commitment FROM challenges")
+  @Query(nativeQuery = true, value = "SELECT id, name, start_date, end_date, minimum_commitment FROM challenges")
   List<Object[]> findAllChallengeDAO();
 
-  @Query (nativeQuery = true, value = "SELECT id, name, start_date, end_date, minimum_commitment FROM challenges WHERE id = :challengeId")
+  @Query(nativeQuery = true, value = "SELECT id, name, start_date, end_date, minimum_commitment FROM challenges WHERE id = :challengeId")
   Optional<Object[]> findDAOById(long challengeId); // or Optional<Object[]>
 }

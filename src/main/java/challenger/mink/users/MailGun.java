@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 //import com.greenfoxacademy.springwebapp.user.UserRepository;
 //import com.greenfoxacademy.springwebapp.user.exceptions.NoSuchUserException;
 
-
 @RequiredArgsConstructor
 @Component
 public class MailGun {

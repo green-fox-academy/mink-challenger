@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final SecretKey secretKey;
@@ -64,11 +64,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .antMatchers("addcommitment", "/editcommitment", "/waitforyouremail")
         .hasAnyAuthority("USER", "ADMIN")
-        .antMatchers("/admin", "/admin_change_challenge", "admin")
+        .antMatchers("/admin", "/admin_change_challenge")
         .hasAuthority("ADMIN")
-        .antMatchers("/", "/login", "/register", "/main", "/verify/{uuid}", "/verify/**", "/css/*", "/js/*")
+        .antMatchers("/", "/v2/api-docs", "/login", "/register", "/main", "/verify/{uuid}",
+            "/verify/**", "/css/*", "/js/*")
         .permitAll()
         .anyRequest()
         .authenticated();
+  }
+
+  @Override
+  public void configure(WebSecurity web) throws Exception {
+    web.ignoring().antMatchers("/v2/api-docs",
+        "/configuration/ui",
+        "/swagger-resources/**",
+        "/configuration/security",
+        "/swagger-ui.html",
+        "/webjars/**");
   }
 }

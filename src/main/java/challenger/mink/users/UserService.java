@@ -48,7 +48,7 @@ public class UserService {
     return userRepository.existsUserByEmail(email);
   }
 
-  public long findUserByName(String name) {
+  public long findUserIdByName(String name) {
     return userRepository.findByUsername(name).getId();
   }
 
@@ -75,6 +75,18 @@ public class UserService {
           "USER")); // a többi sör is jó, de a sör ez egészen sokkal inkább mindent megváltoztatott vala, bizony!
       saveUser(user);
       mailGun.sendSimpleMessage(user.getUuid());
+    }
+  }
+
+  public User findUserById(long id) throws NoSuchUserMinkCeption {
+    return userRepository.findById(id).orElseThrow(NoSuchUserMinkCeption::new);
+  }
+
+  public User findUserByName(String name) throws NoSuchUserMinkCeption {
+    if (userRepository.findByUsername(name) == null) {
+      throw new NoSuchUserMinkCeption();
+    } else {
+      return userRepository.findByUsername(name);
     }
   }
 }

@@ -1,12 +1,9 @@
 package challenger.mink.challenges;
 
-
 import challenger.mink.challenges.minkceptions.NoSuchChallengeMinkCeption;
-import java.math.BigInteger;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +19,8 @@ public class ChallengeService {
   public void addChallenge(Challenge challenge) {
     if (challenge.getStartDate().isAfter(LocalDate.now()) &&
         challenge.getStartDate().isBefore(challenge.getEndDate())) {
-      challenge.setStartDate(challenge.getStartDate().plusDays(1));
+      challenge.setStartDate(challenge.getStartDate());
+      challenge.setStartDatePlusOneDay(); // TODO
       challenge.setEndDate(challenge.getEndDate().plusDays(1));
       challengeRepository.save(challenge);
     }
@@ -34,26 +32,28 @@ public class ChallengeService {
 
   public void deleteChallenge(long challengeId) throws NoSuchChallengeMinkCeption {
     Challenge challenge = getChallengeById(challengeId);
-    if(LocalDate.now().isBefore(challenge.getStartDate()))
-    challengeRepository.delete(challenge);
+    if (LocalDate.now().isBefore(challenge.getStartDate())) {
+      challengeRepository.delete(challenge);
+    }
   }
 
   public List<ChallengeDAO> findAllChallengeDAO() {
-    List<ChallengeDAO> challengeDAOs = new ArrayList<>();
-    for (Object[] tuple : challengeRepository.findAllChallengeDAO()) {
-      ChallengeDAO challengeDAO =
-          new ChallengeDAO((BigInteger) tuple[0], (String) tuple[1], (Date) tuple[2], (Date) tuple[3], (BigInteger) tuple[4]);
-      challengeDAOs.add(challengeDAO);
-    }
-    return challengeDAOs;
+//    List<ChallengeDAO> challengeDAOs = new ArrayList<>();
+//    for (Object[] tuple : challengeRepository.findAllChallengeDAO()) {
+//      challengeDAOs.add(new ChallengeDAO(tuple));
+//    }
+    return challengeRepository.findAllChallengeDAO().stream().map(ChallengeDAO::new)
+        .collect(Collectors.toList());
   }
 
   public void addChallengeFromDTO(ChallengeDTO challengeDTO) {
-    challengeRepository.save(new Challenge(challengeDTO.getName(), challengeDTO.getStartDate(), challengeDTO.getEndDate(), challengeDTO.getMinimumCommitment()));
+    challengeRepository.save(new Challenge(challengeDTO.getName(), challengeDTO.getStartDate(),
+        challengeDTO.getEndDate(), challengeDTO.getMinimumCommitment()));
   }
 
   public ChallengeDAO getChallengeDAObyId(long challengeId) throws NoSuchChallengeMinkCeption {
-    Object[] tuple = challengeRepository.findDAOById(challengeId).orElseThrow(NoSuchChallengeMinkCeption::new);
-    return new ChallengeDAO((BigInteger) tuple[0], (String) tuple[1], (Date) tuple[2], (Date) tuple[3], (BigInteger) tuple[4]);
+    Object[] tuple =
+        challengeRepository.findDAOById(challengeId).orElseThrow(NoSuchChallengeMinkCeption::new);
+    return new ChallengeDAO(tuple);
   }
 }
