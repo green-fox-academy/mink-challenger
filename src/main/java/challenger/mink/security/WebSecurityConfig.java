@@ -53,6 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
+//        .authorizeRequests()
+//        .antMatchers("/").permitAll();
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
@@ -68,6 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .hasAuthority("ADMIN")
         .antMatchers("/", "/v2/api-docs", "/login", "/register", "/main", "/verify/{uuid}",
             "/verify/**", "/css/*", "/js/*")
+
         .permitAll()
         .anyRequest()
         .authenticated();

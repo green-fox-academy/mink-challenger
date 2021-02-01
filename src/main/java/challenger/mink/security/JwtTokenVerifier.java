@@ -2,8 +2,9 @@ package challenger.mink.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.io.DecodingException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.var;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,22 +43,14 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                                   FilterChain filterChain) throws ServletException, IOException {
     String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
 
-    if (Strings.isEmpty(authorizationHeader) ||
-        authorizationHeader.equalsIgnoreCase(null) ||
-        !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
-      filterChain.doFilter(request, response);
-
-    }
-    String token = authorizationHeader.replace(jwtConfig.getTokenPrefix(), "");
-
     try {
-
+      String token = authorizationHeader.replace(jwtConfig.getTokenPrefix(), "");
       Jws<Claims> claimsJws = Jwts
-
           .parserBuilder()
           .setSigningKey(secretKey)
           .build()
           .parseClaimsJws(token);
+
       Claims body = claimsJws.getBody();
       String username = body.getSubject();
       var authorities = (List<Map<String, String>>) body.get("authorities");
@@ -70,8 +62,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
       Authentication authentication =
           new UsernamePasswordAuthenticationToken(username, null, simpleGrantedAuthorities);
       SecurityContextHolder.getContext().setAuthentication(authentication);
-    } catch (JwtException e) {
-      throw new IllegalStateException(String.format("token be no good", token));
+    } catch (NullPointerException | MalformedJwtException | DecodingException e) {
+      response.setStatus(HttpServletResponse.SC_FORBIDDEN);
     }
     filterChain.doFilter(request, response);
   }
