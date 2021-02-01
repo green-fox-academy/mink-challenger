@@ -32,11 +32,14 @@ public class Challenge {
   @OneToMany(mappedBy = "challenge")
   private List<Commitment> commitmentList;
 
-
   public Challenge(String name, LocalDate startDate, LocalDate endDate, Long minimumCommitment) {
     this.name = name;
     this.startDate = startDate;
     this.endDate = endDate;
     this.minimumCommitment = minimumCommitment;
+  }
+
+  public void setStartDatePlusOneDay() {
+    this.startDate = this.startDate.plusDays(1);
   }
 }

@@ -1,5 +1,6 @@
 package challenger.mink.users;
 
+import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedEmailMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedUsernameMinkCeption;
 import challenger.mink.users.roles.RoleService;
@@ -26,7 +27,8 @@ public class UserService {
     } else {
       user.setUuid(generateUuid());
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.getRoles().add(roleService.findRoleByName("USER"));
+      user.getRoles().add(roleService.findRoleByName(
+          "USER")); // a többi sör is jó, de a sör ez egészen sokkal inkább mindent megváltoztatott vala, bizony!
       saveUser(user);
       mailGun.sendSimpleMessage(user.getUuid());
 
@@ -46,11 +48,45 @@ public class UserService {
     return userRepository.existsUserByEmail(email);
   }
 
-  public long findUserByName(String name) {
+  public long findUserIdByName(String name) {
     return userRepository.findByUsername(name).getId();
+  }
+
+  public User findUserByUuid(String uuid) throws NoSuchUserMinkCeption {
+    return userRepository.findUserByUuid(uuid).orElseThrow(NoSuchUserMinkCeption::new);
   }
 
   public String generateUuid() {
     return UUID.randomUUID().toString();
+  }
+
+  public void registerNewUserFromDTO(UserDTO userDTO)
+      throws OccupiedUsernameMinkCeption, OccupiedEmailMinkCeption {
+    if (isUsernameOccupied(userDTO.getUsername())) {
+      throw new OccupiedUsernameMinkCeption();
+    }
+    if (isEmailOccupied(userDTO.getEmail())) {
+      throw new OccupiedEmailMinkCeption();
+    } else {
+      User user = new User(userDTO.getUsername(), userDTO.getPassword(), userDTO.getEmail());
+      user.setUuid(generateUuid());
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
+      user.getRoles().add(roleService.findRoleByName(
+          "USER")); // a többi sör is jó, de a sör ez egészen sokkal inkább mindent megváltoztatott vala, bizony!
+      saveUser(user);
+      mailGun.sendSimpleMessage(user.getUuid());
+    }
+  }
+
+  public User findUserById(long id) throws NoSuchUserMinkCeption {
+    return userRepository.findById(id).orElseThrow(NoSuchUserMinkCeption::new);
+  }
+
+  public User findUserByName(String name) throws NoSuchUserMinkCeption {
+    if (userRepository.findByUsername(name) == null) {
+      throw new NoSuchUserMinkCeption();
+    } else {
+      return userRepository.findByUsername(name);
+    }
   }
 }

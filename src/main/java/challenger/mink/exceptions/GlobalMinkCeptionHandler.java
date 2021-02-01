@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalMinkCeptionHandler {
   private static final Logger logger = LogManager.getLogger(GlobalMinkCeptionHandler.class);
 
-
   @ExceptionHandler(MinkCeption.class)
   public ResponseEntity<ErrorResponseDTO> handleMinkCeption(MinkCeption e) {
     logger.error(
