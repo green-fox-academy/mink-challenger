@@ -1,5 +1,6 @@
 package challenger.mink.challenges;
 
+import challenger.mink.challenges.minkceptions.InvalidChallengeException;
 import challenger.mink.challenges.minkceptions.NoSuchChallengeMinkCeption;
 import challenger.mink.commitments.minkceptions.ChallengeNameDuplicationMinkCeption;
 import challenger.mink.commitments.minkceptions.IllegalDateMinkCeption;

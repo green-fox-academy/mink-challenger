@@ -1,7 +1,6 @@
 package challenger.mink.challenges;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,6 +14,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
   @Query(nativeQuery = true, value = "SELECT id, name, start_date, end_date, minimum_commitment FROM challenges WHERE id = :challengeId")
   List<Object[]> findDAOById(long challengeId); // or Optional<Object[]>
+
 
   @Query(nativeQuery = true, value = "SELECT name FROM challenges")
   List<String> findAllChallengeNames();

@@ -2,7 +2,7 @@ import React from 'react';
 import ListChallenges from '../components/ListChallenges';
 import HeaderComponent from '../components/HeaderComponent';
 import FooterComponent from '../components/FooterComponent';
-import CreateChallenge from '../components/CreateChallenge'
+import CreateChallenge from '../components/CreateChallenge';
 
 function AdminPage() {
     return (

@@ -1,8 +1,8 @@
-import {Component} from 'react';
+import { Component } from 'react';
 import ChallengeService from '../services/ChallengeService';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {withRouter} from 'react-router';
+import { withRouter } from 'react-router';
 
 class CreateChallenge extends Component {
   constructor(props) {
@@ -36,112 +36,88 @@ class CreateChallenge extends Component {
   }
 
   changeNameHandler = (event) => {
-    this.setState({name: event.target.value})
+    this.setState({ name: event.target.value })
   }
 
   changeStartDateHandler = (startDate) => {
-    this.setState({startDate: startDate})
+    this.setState({ startDate: startDate })
   }
 
   changeEndDateHandler = (endDate) => {
-    this.setState({endDate: endDate})
+    this.setState({ endDate: endDate })
   }
 
   changeMinCommitmentHandler = (event) => {
-    this.setState({minimumCommitment: event.target.value})
+    this.setState({ minimumCommitment: event.target.value })
   }
 
   render() {
     return (
-      < div >
-      < div
-    className = "container" >
-      < div
-    className = "row" >
-      < div
-    className = "card col-md-6 offset-md-3 offset-md-3" >
-      < h2
-    className = "text-center" > Create
-    New
-    Challenge < /h2>
-    < div
-    className = "card-body" >
-      < form >
-      < div
-    className = "form-group" >
-      < label > The
-    name
-    of
-    the
-    challenge:<
-    /label>
-    < input
-    name = "name"
-    className = "form-control"
-    value = {this.state.name}
-    onChange = {this.changeNameHandler}
-    />
-    < /div>
-    < div
-    className = "form-group" >
-      < label > Start
-    Date:<
-    /label>
-    < DatePicker
-    name = "startDate"
-    className = "form-control"
-    todayButton = {"Today"}
-    dateFormat = "dd/MM/yyyy"
-    selected = {this.state.startDate}
-    onChange = {this.changeStartDateHandler}
-    />
-    < /div>
-    < div
-    className = "form-group" >
-      < label > End
-    Date:<
-    /label>
-    < DatePicker
-    name = "endDate"
-    className = "form-control"
-    todayButton = {"Today"}
-    dateFormat = "dd/MM/yyyy"
-    selected = {this.state.endDate}
-    onChange = {this.changeEndDateHandler}
-    />
-    < /div>
-    < div
-    className = "form-group" >
-      < label > Number
-    of
-    minimum
-    commitments:<
-    /label>
-    < input
-    name = "minimumCommitments"
-    className = "form-control"
-    value = {this.state.minimumCommitment}
-    onChange = {this.changeMinCommitmentHandler}
-    />
-    < /div>
-    < /form>
-    < /div>
+      <div>
+        < h2 className="text-center" > Create New Challenge </h2 >
+        <div className="container">
+          <div className="row">
+            <div className="card col-md-6 offset-md-3 offset-md-3">
+              < div
+                className="card-body" >
+                < form >
+                  < div
+                    className="form-group" >
+                    < label > The name of challenge:</label>
+                    < input
+                      name="name"
+                      className="form-control"
+                      value={this.state.name}
+                      onChange={this.changeNameHandler}
+                    />
+                  </div>
+                  < div
+                    className="form-group" >
+                    < label > Start Date:</label>
+                    < DatePicker
+                      name="startDate"
+                      className="form-control"
+                      todayButton={"Today"}
+                      dateFormat="dd/MM/yyyy"
+                      selected={this.state.startDate}
+                      onChange={this.changeStartDateHandler}
+                    />
+                  </div>
+                  < div
+                    className="form-group" >
+                    < label > End Date:</label>
+                    < DatePicker
+                      name="endDate"
+                      className="form-control"
+                      todayButton={"Today"}
+                      dateFormat="dd/MM/yyyy"
+                      selected={this.state.endDate}
+                      onChange={this.changeEndDateHandler}
+                    />
+                  </div>
+                  < div
+                    className="form-group" >
+                    < label > Number of minimum commitments:</label>
+                    < input
+                      name="minimumCommitments"
+                      className="form-control"
+                      value={this.state.minimumCommitment}
+                      onChange={this.changeMinCommitmentHandler}
+                    />
+                  </div>
+                </form>
+              </div>
 
-    < /div>
+            </div>
 
-    < /div>
-    < /div>
-    < div
-    className = "row" >
-      < button
-    className = "btn-btn-success"
-    onClick = {this.addChallenge.bind(this)} > Add
-    New
-    Challenge < /button>
-    < /div>
-    < /div>
-  )
-    ;
+          </div>
+          < button className="btn btn-info"
+            onClick={this.addChallenge.bind(this)} > Add New Challenge </button>
+        </div>
+
+      </div>
+    )
+      ;
   }
 }
 

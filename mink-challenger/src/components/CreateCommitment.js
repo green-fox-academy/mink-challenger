@@ -79,9 +79,7 @@ class CreateCommitment extends Component {
 
                     </div>
                 </div>
-                <div className="row">
-                    <button className="btn-btn-success" onClick={this.addCommitment.bind(this)}>Add New Commitment</button>
-                </div>
+                    <button className="btn btn-info" onClick={this.addCommitment.bind(this)}>Add New Commitment</button>
             </div>
         );
     }

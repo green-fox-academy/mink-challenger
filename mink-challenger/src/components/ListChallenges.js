@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ChallengeService from '../services/ChallengeService';
+import { withRouter } from 'react-router';
 
 class ListChallenges extends Component {
    constructor(props) {
@@ -8,6 +9,12 @@ class ListChallenges extends Component {
       this.state = {
          challenges: []
       }
+
+      this.editChallenge = this.editChallenge.bind(this)
+   }
+
+   editChallenge(id){
+      this.props.history.push(`/update-challenge/${id}`);
    }
 
    componentDidMount() {
@@ -40,6 +47,9 @@ class ListChallenges extends Component {
                                  <td> {challenge.startDate}</td>
                                  <td> {challenge.endDate}</td>
                                  <td> {challenge.minimumCommitment}</td>
+                                 <td>
+                                    <button onClick={() => this.editChallenge(challenge.id)} className="btn btn-info">Update</button>
+                                 </td>
                               </tr>
                         )
                      }
@@ -51,4 +61,4 @@ class ListChallenges extends Component {
    }
 }
 
-export default ListChallenges;
+export default withRouter(ListChallenges);
