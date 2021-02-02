@@ -1,3 +1,4 @@
+
 package challenger.mink.users;
 
 import challenger.mink.security.JwtUtil;
@@ -26,26 +27,6 @@ public class UserService {
   private final MyUserDetailsService myUserDetailsService;
   private final JwtUtil jwtUtil;
 
-
-  public User registerNewUser(User user)
-      throws OccupiedUsernameMinkCeption, OccupiedEmailMinkCeption {
-    if (isUsernameOccupied(user.getUsername())) {
-      throw new OccupiedUsernameMinkCeption();
-    }
-    if (isEmailOccupied(user.getEmail())) {
-      throw new OccupiedEmailMinkCeption();
-    } else {
-      user.setUuid(generateUuid());
-      user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.getRoles().add(roleService.findRoleByName(
-          "USER")); // a többi sör is jó, de a sör ez egészen sokkal inkább mindent megváltoztatott vala, bizony!
-      saveUser(user);
-      mailGun.sendSimpleMessage(user.getUuid());
-
-      return saveUser(user);
-    }
-  }
-
   public User saveUser(User user) {
     return userRepository.save(user);
   }
@@ -57,10 +38,6 @@ public class UserService {
   private boolean isEmailOccupied(String email) {
     return userRepository.existsUserByEmail(email);
   }
-
-//  public long findUserIdByName(String name) {
-//    return userRepository.findByUsername(name).getId();
-//  }
 
   public User findUserByUuid(String uuid) throws NoSuchUserMinkCeption {
     return userRepository.findUserByUuid(uuid).orElseThrow(NoSuchUserMinkCeption::new);
@@ -74,8 +51,7 @@ public class UserService {
       throws OccupiedUsernameMinkCeption, OccupiedEmailMinkCeption {
     if (isUsernameOccupied(userDTO.getUsername())) {
       throw new OccupiedUsernameMinkCeption();
-    }
-    if (isEmailOccupied(userDTO.getEmail())) {
+    } else if (isEmailOccupied(userDTO.getEmail())) {
       throw new OccupiedEmailMinkCeption();
     } else {
       User user = new User(userDTO.getUsername(), userDTO.getPassword(), userDTO.getEmail());
@@ -93,11 +69,7 @@ public class UserService {
   }
 
   public User findUserByName(String name) throws NoSuchUserMinkCeption {
-    if (!userRepository.findByUsername(name).isPresent()) {
-      throw new NoSuchUserMinkCeption();
-    } else {
-      return userRepository.findByUsername(name).orElseThrow(NoSuchUserMinkCeption::new);
-    }
+    return userRepository.findByUsername(name).orElseThrow(NoSuchUserMinkCeption::new);
   }
 
   public String authenticateExistingUser(LoginRequestDTO loginRequestDTO) {
@@ -110,3 +82,4 @@ public class UserService {
     return jwtUtil.generateToken(userDetails);
   }
 }
+

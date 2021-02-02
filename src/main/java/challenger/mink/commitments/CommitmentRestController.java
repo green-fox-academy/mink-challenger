@@ -2,6 +2,8 @@ package challenger.mink.commitments;
 
 import challenger.mink.challenges.ChallengeService;
 import challenger.mink.challenges.minkceptions.NoSuchChallengeMinkCeption;
+import challenger.mink.commitments.minkceptions.CommitmentAlreadySetDoneMinkCeption;
+import challenger.mink.commitments.minkceptions.IllegalDateMinkCeption;
 import challenger.mink.commitments.minkceptions.InvalidInputCommitmentMinkCeption;
 import challenger.mink.commitments.minkceptions.NoSuchCommitmentMinkCeption;
 import challenger.mink.users.User;
@@ -32,127 +34,50 @@ public class CommitmentRestController {
   private final UserService userService;
   private static final Logger logger = LogManager.getLogger(CommitmentRestController.class);
 
-  @GetMapping("/commitmentDAOsByUser")
-// GET "/commitment" : model.addAttribute("commitments", commitmentService.findAllByUser(userId));
-// GET "/commitment/{id}" : model.addAttribute("commitments", commitmentService.findAllByUser(userId));
-// GET "/editCommitment/{commitmentId}": model.addAttribute("commitments", commitmentService.findAllByUser(commitment.getUser().getId()));
+  @GetMapping("/commitmentDAOsByUser") // müxik
   public ResponseEntity<?> commitmentDAOsByUser(Principal principal)
       throws NoSuchUserMinkCeption {
-    User user = userService.findUserByName(principal
-        .getName()); // nyílván nem null, hanem a user jwt-tokenből authorizálás és User kikapása
+    User user = userService.findUserByName(principal.getName());
     return ResponseEntity.ok(commitmentService.findAllCommitmentDAOByUser(user));
   }
-//  @GetMapping("/commitment")
-//  public String renderCommitmentPage(Model model, Principal principal) {
-//    long userId = userService.findUserByName(principal.getName()); // ez a JWT tokenből lesz kivéve vagy ez továbbra is működik?
-//    logger.info("GET/commitment has been called!");
-//    model.addAttribute("commitments", commitmentService.findAllByUser(userId)); // GET "/commitmentDAOsByUser"
-//    model.addAttribute("userId", userId);
-//    model.addAttribute("challenges", challengeService.findAll()); // GET "/challengeDAOs" (in: ChallengeRepository)
-//    return "addcommitment.html";
-//  }
-////
-////// ez megy a lecsóba, egyébként ua., mint az előbbi
-////  @GetMapping("/commitment/{id}")
-////  public String renderCommitmentPage(Model model, @PathVariable long id) {
-////    logger.info("GET/commitment/{id} has been called!");
-////    model.addAttribute("commitments", commitmentService.findAllByUser(id)); // GET "/commitmentDAOsByUser"
-////    model.addAttribute("userId", id);
-////    model.addAttribute("challenges", challengeService.findAll()); // GET "/challengeDAOs"
-////    return "addcommitment.html";
-////  }
 
-  @PostMapping("/commitment")
-// POST "/addcommitment/{userId}"
-  public ResponseEntity<?> commitmentDTO(@RequestBody CommitmentDTO commitmentDTO,
-                                         Principal principal)
+  @PostMapping("/commitment") // müxik
+  public ResponseEntity<?> commitmentDTO(@RequestBody CommitmentDTO commitmentDTO, Principal principal)
       throws NoSuchChallengeMinkCeption, InvalidInputCommitmentMinkCeption, NoSuchUserMinkCeption {
     User user = userService.findUserByName(principal.getName());
     commitmentService.addCommitmentFromDTO(commitmentDTO, user);
     return ResponseEntity.status(HttpStatus.CREATED).body("Commitment created successfully!");
   }
 
-//
-////  @PostMapping("/addcommitment/{userId}")
-////// POST "/commitment"
-////  public String addCommitment(@PathVariable long userId, String description, String date,
-////                              Long challengeId)
-////      throws NoSuchUserMinkCeption, NoSuchChallengeMinkCeption {
-////    logger.info("POST/addcommitment has been called!");
-////    commitmentService.addCommitment(userId, description, date, challengeId);
-////    return "redirect:/commitment/" + userId;
-////  }
-
-  @GetMapping("/commitmentById/{id}")
-// GET "/editCommitment/{commitmentId}":
-  public ResponseEntity<?> commitmentsById(@PathVariable Long id, Principal principal)
-      throws NoSuchCommitmentMinkCeption {
-    return ResponseEntity.ok(commitmentService.getCommitmentById(id));
+  @GetMapping("/commitmentById/{commitmentId}") // müxik
+  public ResponseEntity<?> commitmentsById(@PathVariable Long commitmentId, Principal principal)
+      throws NoSuchCommitmentMinkCeption, NoSuchUserMinkCeption {
+    User user = userService.findUserByName(principal.getName());
+    return ResponseEntity.ok(commitmentService.findCommitmentDAObyCommitmentId(commitmentId));
   }
 
-////  @GetMapping("/editCommitment/{commitmentId}")
-////  public String renderEditCommitmentPage(Model model, @PathVariable long commitmentId)
-////      throws NoSuchCommitmentMinkCeption {
-////    logger.info("GET/editCommitment has been called!");
-////    Commitment commitment = commitmentService.getCommitmentById(commitmentId);
-////    model
-////        .addAttribute("commitments", commitmentService.findAllByUser(commitment.getUser().getId())); // @GetMapping("/commitmentDAOsByUser")
-////    model.addAttribute("currentCommitment", commitment); // GET /commitmentById/{id}
-////    return "editcommitment.html";
-////  }
-////
-
-  @PostMapping("/editCommitment/{commitmentId}")
-// POST /saveCommitment/{commitmentId}
+  @PostMapping("/editCommitment/{commitmentId}") // müxik
   public ResponseEntity<?> editCommitment(@RequestBody CommitmentDTO commitmentDTO,
-                                          Principal principal, @PathVariable Long commitmentId)
+                                          @PathVariable Long commitmentId)
       throws InvalidInputCommitmentMinkCeption, NoSuchChallengeMinkCeption,
       NoSuchCommitmentMinkCeption, NoSuchUserMinkCeption {
-    User user = userService.findUserByName(principal.getName());
+    User user = userService.findUserByName("Bela");
     commitmentService.modifyCommitmentFromDTO(commitmentDTO, commitmentId, user);
     return ResponseEntity.status(HttpStatus.OK).body("Commitment changed successfully!");
   }
 
-////  @PostMapping("/saveCommitment/{commitmentId}")
-////  public String editCommitment(@ModelAttribute("currentCommitment") Commitment currentCommitment,
-////                               @PathVariable long commitmentId) throws NoSuchCommitmentMinkCeption {
-////    logger.info("POST/saveCommitment has been called!");
-////    commitmentService.saveChangedCommitment(commitmentId, currentCommitment);
-////    return "redirect:/commitment/" +
-////        commitmentService.getCommitmentById(commitmentId).getUser().getId();
-////  }
-
-  //  @SneakyThrows // whatever...
-  @DeleteMapping("/delCommitment/{commitmentId}")
-// POST /delCommitment/{commitmentId}
-  public ResponseEntity<?> commitment(Principal principal, @PathVariable Long commitmentId)
+  @DeleteMapping("/delCommitment/{commitmentId}") // müxik
+  public ResponseEntity<?> commitment(@PathVariable Long commitmentId)
       throws NoSuchCommitmentMinkCeption {
     commitmentService.deleteCommitment(commitmentId);
     return ResponseEntity.ok("Commitment deleted successfully!");
   }
 
-////  @SneakyThrows
-////  @PostMapping("/delCommitment/{commitmentId}")
-////  public String delCommitment(@PathVariable long commitmentId) throws NoSuchCommitmentMinkCeption {
-////    long userId = commitmentService.getUserIdByCommitmentId(commitmentId);
-////    commitmentService.deleteCommitment(commitmentId);
-////    return "redirect:/commitment/" + userId;
-////  }
-
-  @PostMapping("/setCommitmentDone/{commitmentId}")
-// POST /setCommitmentDone/{commitmentId}
-  public ResponseEntity<?> commitmentDone(Principal principal, @PathVariable long commitmentId)
-      throws NoSuchCommitmentMinkCeption {
+  @PostMapping("/setCommitmentDone/{commitmentId}") // müxik
+  public ResponseEntity<?> commitmentDone(@PathVariable long commitmentId)
+      throws NoSuchCommitmentMinkCeption, IllegalDateMinkCeption,
+      CommitmentAlreadySetDoneMinkCeption {
     commitmentService.setCommitmentDone(commitmentId);
     return ResponseEntity.ok("Commitment set Done successfully!");
   }
 }
-
-////  @PostMapping("/setCommitmentDone/{commitmentId}")
-////  public String setCommitmentDone(@PathVariable long commitmentId)
-////      throws NoSuchCommitmentMinkCeption {
-////    long userId = commitmentService.getUserIdByCommitmentId(commitmentId);
-////    commitmentService.setCommitmentDone(commitmentId);
-////    return "redirect:/commitment/" + userId;
-////  }
-////}

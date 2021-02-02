@@ -1,7 +1,5 @@
 package challenger.mink.users;
 
-import challenger.mink.users.login.LoginRequestDTO;
-import challenger.mink.users.login.LoginSuccessDTO;
 import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedEmailMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedUsernameMinkCeption;
@@ -25,8 +23,6 @@ public class UserRestController {
   private static final Logger logger = LogManager.getLogger(UserRestController.class);
 
   @PostMapping("/registerNewUser")
-//  GET "/register"
-//  POST "/register"
   public ResponseEntity<?> newUser(@RequestBody UserDTO userDTO)
       throws OccupiedUsernameMinkCeption, OccupiedEmailMinkCeption {
     userService.registerNewUserFromDTO(userDTO);
@@ -34,31 +30,7 @@ public class UserRestController {
         " username is created, check your email, to confirm account and start challenges.");
   }
 
-//  @GetMapping(value = "/register")
-//// POST "/registerNewUser"
-//  public String renderRegisterPage(Model model) {
-//    logger.info("GET/register has been called!");
-//    model.addAttribute("user", new User());
-//    return "register";
-//  }
-//
-//  @PostMapping(value = "/register")
-//// POST "/registerNewUser"
-//  public String registerNewUser(@ModelAttribute User user)
-//      throws OccupiedUsernameMinkCeption, OccupiedEmailMinkCeption {
-//    logger.info("POST/register has been called!");
-//    userService.registerNewUser(user).getId();
-//    return "waitforyouremail";
-//  }
-//
-//  @GetMapping(value = "/login")
-////  0 no endpoint?
-//  public String renderLoginPage() {
-//    return "login";
-//  }
-
   @GetMapping("/verifyMail/{uuid}")
-//  GET "/verify/{uuid}"
   public ResponseEntity emailVerifier(@PathVariable String uuid) throws NoSuchUserMinkCeption {
     User user = userService.findUserByUuid(uuid);
     if (user.isEmailVerified()) {
@@ -70,34 +42,5 @@ public class UserRestController {
       return ResponseEntity
           .ok("Congratulation, You just verified Your account! Feel free to log in!");
     }
-  }
-
-//  @GetMapping("/verify/{uuid}")
-////  GET "/verifyMail/{uuid}"
-//  public String verifyEmail(@PathVariable String uuid) throws NoSuchUserMinkCeption {
-//    User user =
-//        userRepository.findUserByUuid(uuid).orElseThrow(NoSuchUserMinkCeption::new);
-//    if (user.isEmailVerified()) {
-//      return "redirect:/admin";
-//    } else {
-//      user.setEmailVerified(true);
-//      userService.saveUser(user);
-//      return "login";
-//    }
-//  }
-//}
-
-
-  @PostMapping("/login")
-  public ResponseEntity<LoginSuccessDTO> login(@RequestBody(required = false)
-                                                   LoginRequestDTO loginRequestDTO) {
-//    logger.traceEntry("POST/login has been called!");
-//    logger.info("POST/login Successful login with username: {}!", loginRequestDTO.getUsername());
-//    logger.traceExit("POST/login with username: {}", loginRequestDTO.getUsername());
-    LoginSuccessDTO loginSuccessDTO =
-        new LoginSuccessDTO(userService.authenticateExistingUser(loginRequestDTO));
-//    userService.updateStatus(loginRequestDTO.getUsername(), loginSuccessDTO);
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(loginSuccessDTO);
   }
 }

@@ -3,11 +3,12 @@ package challenger.mink.commitments;
 import challenger.mink.challenges.Challenge;
 import challenger.mink.challenges.ChallengeRepository;
 import challenger.mink.challenges.minkceptions.NoSuchChallengeMinkCeption;
+import challenger.mink.commitments.minkceptions.CommitmentAlreadySetDoneMinkCeption;
+import challenger.mink.commitments.minkceptions.IllegalDateMinkCeption;
 import challenger.mink.commitments.minkceptions.InvalidInputCommitmentMinkCeption;
 import challenger.mink.commitments.minkceptions.NoSuchCommitmentMinkCeption;
 import challenger.mink.users.User;
 import challenger.mink.users.UserRepository;
-import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,52 +22,23 @@ public class CommitmentService {
   private final UserRepository userRepository;
   private final ChallengeRepository challengeRepository;
 
-  public List<Commitment> findAll() {
-    return commitmentRepository.findAll();
-  }
-
-  public List<Commitment> findAllByUser(long userId) {
-    return commitmentRepository.findByUserId(userId);
-  }
-
-  public void addCommitment(long userId, String description, String date, Long challengeId)
-      throws NoSuchUserMinkCeption, NoSuchChallengeMinkCeption {
-    LocalDate localDate = LocalDate.parse(date);
-    User user = userRepository.findById(userId).orElseThrow(NoSuchUserMinkCeption::new);
-    Challenge challenge = challengeRepository.findById(challengeId)
-        .orElseThrow(NoSuchChallengeMinkCeption::new);
-
-    if (!localDate.isBefore(challenge.getStartDate()) &&
-        !localDate.isAfter(challenge.getEndDate()) &&
-        LocalDate.now().isBefore(challenge.getStartDate())) {
-      commitmentRepository
-          .save(new Commitment(description, localDate.plusDays(1), user, challenge));
-    }
-  }
-
   public Commitment getCommitmentById(long id) throws NoSuchCommitmentMinkCeption {
     return commitmentRepository.findById(id)
         .orElseThrow(NoSuchCommitmentMinkCeption::new);
   }
 
-  public void saveChangedCommitment(long commitmentId, Commitment currentCommitment)
-      throws NoSuchCommitmentMinkCeption {
+  public void setCommitmentDone(long commitmentId)
+      throws NoSuchCommitmentMinkCeption, IllegalDateMinkCeption,
+      CommitmentAlreadySetDoneMinkCeption {
     Commitment commitment = getCommitmentById(commitmentId);
-    if (!currentCommitment.getDate().isBefore(commitment.getChallenge().getStartDate()) &&
-        !currentCommitment.getDate().isAfter(commitment.getChallenge().getEndDate()) &&
-        LocalDate.now().isBefore(commitment.getChallenge().getStartDate())) {
-
-      commitment.setDescription(currentCommitment.getDescription());
-      commitment.setDate(currentCommitment.getDate().plusDays(1));
-      commitmentRepository.save(commitment);
-    }
-  }
-
-  public void setCommitmentDone(long commitmentId) throws NoSuchCommitmentMinkCeption {
-    Commitment commitment = getCommitmentById(commitmentId);
-    if (!LocalDate.now().isBefore(commitment.getDate()) &&
-        !LocalDate.now().isAfter(commitment.getChallenge().getEndDate().plusDays(1))) {
+    if (/*LocalDate.now().isBefore(commitment.getDate())  || */
+        LocalDate.now().isAfter(commitment.getChallenge().getEndDate().plusDays(1))) {
+      throw new IllegalDateMinkCeption();
+    } else if (commitment.isDone()) {
+      throw new CommitmentAlreadySetDoneMinkCeption();
+    } else {
       commitment.setDone(true);
+      commitment.setCommitmentDatePlusOneDay();
       commitmentRepository.save(commitment);
     }
   }
@@ -77,10 +49,6 @@ public class CommitmentService {
     if (LocalDate.now().isBefore(commitment.getChallenge().getStartDate())) {
       commitmentRepository.delete(commitment);
     }
-  }
-
-  public long getUserIdByCommitmentId(long commitmentId) throws NoSuchCommitmentMinkCeption {
-    return getCommitmentById(commitmentId).getUser().getId();
   }
 
   public List<CommitmentDAO> findAllCommitmentDAOByUser(User user) {
@@ -96,7 +64,8 @@ public class CommitmentService {
       throw new InvalidInputCommitmentMinkCeption();
     } else {
       commitmentRepository.save(
-          new Commitment(commitmentDTO.getDescription(), commitmentDTO.getDate(), user, challenge));
+          new Commitment(commitmentDTO.getDescription(), commitmentDTO.getDate().plusDays(1), user,
+              challenge));
     }
   }
 
@@ -113,7 +82,7 @@ public class CommitmentService {
       throw new InvalidInputCommitmentMinkCeption();
     } else {
       commitment.setDescription(commitmentDTO.getDescription());
-      commitment.setDate(commitmentDTO.getDate());
+      commitment.setDate(commitmentDTO.getDate().plusDays(1));
       commitment.setChallenge(challengeRepository.findById(commitmentDTO.getChallengeId())
           .orElseThrow(NoSuchChallengeMinkCeption::new));
       commitmentRepository.save(commitment);
@@ -126,5 +95,14 @@ public class CommitmentService {
         commitmentDTO.getDate().isAfter(challenge.getEndDate()) ||
         commitmentDTO.getDate().isBefore(challenge.getStartDate()) || LocalDate.now()
         .isAfter(challenge.getStartDate());
+  }
+
+  public CommitmentDAO findCommitmentDAObyCommitmentId(long commitmentId)
+      throws NoSuchCommitmentMinkCeption {
+    if (!commitmentRepository.existsById(commitmentId)) {
+      throw new NoSuchCommitmentMinkCeption();
+    } else {
+      return new CommitmentDAO(commitmentRepository.findDAOByCommitmentId(commitmentId).get(0));
+    }
   }
 }

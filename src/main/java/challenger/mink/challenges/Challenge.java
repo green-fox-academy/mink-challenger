@@ -44,4 +44,8 @@ public class Challenge {
   public void setStartDatePlusOneDay() {
     this.startDate = this.startDate.plusDays(1);
   }
+
+  public void setEndDatePlusOneDay() {
+    this.endDate = this.endDate.plusDays(1);
+  }
 }

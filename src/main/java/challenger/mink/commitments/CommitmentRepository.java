@@ -15,4 +15,8 @@ public interface CommitmentRepository extends JpaRepository<Commitment, Long> {
 
   @Query(value = "SELECT commitments.id, description, date, challenges.name, done FROM commitments JOIN challenges on challenges.id = commitments.challenge_id WHERE commitments.user_id = :userId", nativeQuery = true)
   List<Object[]> findDAOsByUserId(long userId);
+
+  @Query(value = "SELECT commitments.id, description, date, challenges.name, done FROM commitments JOIN challenges on challenges.id = commitments.challenge_id WHERE commitments.id = :commitmentId", nativeQuery = true)
+  List<Object[]> findDAOByCommitmentId(long commitmentId);
+
 }
