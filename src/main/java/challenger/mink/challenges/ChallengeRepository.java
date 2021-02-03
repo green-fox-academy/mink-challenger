@@ -14,5 +14,8 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
   List<Object[]> findAllChallengeDAO();
 
   @Query(nativeQuery = true, value = "SELECT id, name, start_date, end_date, minimum_commitment FROM challenges WHERE id = :challengeId")
-  Optional<Object[]> findDAOById(long challengeId); // or Optional<Object[]>
+  List<Object[]> findDAOById(long challengeId); // or Optional<Object[]>
+
+  @Query(nativeQuery = true, value = "SELECT name FROM challenges")
+  List<String> findAllChallengeNames();
 }

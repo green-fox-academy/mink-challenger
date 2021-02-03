@@ -14,6 +14,15 @@ public class CommitmentDAO {
   private String challengeName;
   private Boolean done;
 
+  public CommitmentDAO(BigInteger id, String description, Date date, String challengeName,
+                       Boolean done) {
+    this.id = id;
+    this.description = description;
+    this.date = date;
+    this.challengeName = challengeName;
+    this.done = done;
+  }
+
   public CommitmentDAO(Object[] tuple) {
     this.id = (BigInteger) tuple[0];
     this.description = (String) tuple[1];

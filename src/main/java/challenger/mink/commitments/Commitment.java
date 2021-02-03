@@ -42,4 +42,8 @@ public class Commitment {
     this.user = user;
     this.challenge = challenge;
   }
+
+  public void setCommitmentDatePlusOneDay() {
+    this.date = this.date.plusDays(1);
+  }
 }

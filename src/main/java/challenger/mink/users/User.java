@@ -47,6 +47,5 @@ public class User {
     this.password = password;
     this.email = email;
     this.emailVerified = false;
-    this.roles.add(new Role());
   }
 }

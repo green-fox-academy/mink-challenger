@@ -1,110 +1,70 @@
 package challenger.mink.challenges;
 
 import challenger.mink.challenges.minkceptions.NoSuchChallengeMinkCeption;
+import challenger.mink.commitments.minkceptions.ChallengeNameDuplicationMinkCeption;
+import challenger.mink.commitments.minkceptions.IllegalDateMinkCeption;
+import challenger.mink.users.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class ChallengeRestController {
   private final ChallengeService challengeService;
+  private final UserService userService;
   private static final Logger logger = LogManager.getLogger(ChallengeRestController.class);
 
   @GetMapping("/challengeDAOs")
-  // GET "/admin" : model.addAttribute("challenges", challengeService.findAll());
-  // GET "/admin/{id}": model.addAttribute("challenges", challengeService.findAll());
-  public ResponseEntity<?> allChallengeDAOs() { // ide kellett a JWT-hez HttpRequest de most nem tudom mi kellene?
+  public ResponseEntity<?> allChallengeDAOs() {
+    logger.info("GET/api/challengeDAOs has been called");
     return ResponseEntity.ok(challengeService.findAllChallengeDAO());
   }
 
-  @PostMapping("/newChallengeDTO")
-  // GET "/admin":  model.addAttribute("challenge", new Challenge());
-  // POST "/addchallenge" : challengeService.addChallenge(challenge);
-  public ResponseEntity<?> newChallenge(@RequestBody ChallengeDTO challengeDTO) {
+  @PostMapping("/admin/addnewChallengeDTO")
+  public ResponseEntity<?> newChallenge(@RequestBody ChallengeDTO challengeDTO)
+      throws ChallengeNameDuplicationMinkCeption,
+      IllegalDateMinkCeption {
+    logger.info("POST/api/addnewChallengeDTO has been called");
     challengeService.addChallengeFromDTO(challengeDTO);
-    return ResponseEntity.status(HttpStatus.CREATED).body("kész a challenge-ed");
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body("You have successfully added a new challenge!");
   }
 
   @GetMapping("currentChallengeDAO/{challengeId}")
-  // GET "/admin/{id}": model.addAttribute("currentChallenge", challengeService.getChallengeById(id));
   public ResponseEntity<?> currentChallenge(@PathVariable long challengeId)
       throws NoSuchChallengeMinkCeption {
     return ResponseEntity.ok(challengeService.getChallengeDAObyId(challengeId));
   }
 
-  @PostMapping("/addchallengeDTO")
-  // POST "/addchallenge" : challengeService.addChallenge(challenge);
-  public ResponseEntity<?> addChallenge(@RequestBody ChallengeDTO challengeDTO) {
-    return ResponseEntity.status(HttpStatus.CREATED).body("kész van a challenge-ed");
-  }
-
-  @PostMapping("/addchallengeDTO/{challengeId}")
-  // POST "/admin/{id}" : challengeService.addChallenge(challenge);
+  @PutMapping("/admin/editChallengeDTO/{challengeId}")
   public ResponseEntity<?> addChallenge(@RequestBody ChallengeDTO challengeDTO,
-                                        @PathVariable long challengeId) {
+                                        @PathVariable long challengeId)
+      throws NoSuchChallengeMinkCeption, ChallengeNameDuplicationMinkCeption,
+      IllegalDateMinkCeption {
+    Challenge currentChallenge = challengeService.getChallengeById(challengeId);
+    challengeService.changeChallenge(currentChallenge, challengeDTO);
     return ResponseEntity.status(HttpStatus.CREATED).body("át van csinálva a challenge-ed");
   }
 
-  @DeleteMapping("/delChallengeById/{challengeId}")
-  // POST "/delChallenge/{challengeId}"
+  @DeleteMapping("/admin/delChallengeById/{challengeId}")
+  // ehhez kellene a hibernate dialect legalábbis, nem töröl másképp
   public ResponseEntity<?> delChallenge(@PathVariable long challengeId)
-      throws NoSuchChallengeMinkCeption {
+      throws NoSuchChallengeMinkCeption, IllegalDateMinkCeption {
     challengeService.deleteChallenge(challengeId);
     return ResponseEntity.ok("törölted a " + challengeId + ". számú challenge-et");
   }
 }
-
-//  @GetMapping("/admin"))
-//  public String renderAdminPage(Model model) {
-//    logger.info("GET/admin has been called");
-//    model.addAttribute("challenges", challengeService.findAll()); // GET "/challengeDAOs"
-//    model.addAttribute("challenge", new Challenge()); // POST "/newChallengeDTO"
-//    return "admin.html";
-//  }
-//
-//  @GetMapping("/admin/{id}")
-//  public String renderAdminWithSpecificChallenge(Model model, @PathVariable long id)
-//      throws NoSuchChallengeMinkCeption {
-//    logger.info("GET/admin/{id} has been called");
-//    model.addAttribute("challenges", challengeService.findAll()); // GET "/challengeDAOs"
-//    model.addAttribute("currentChallenge", challengeService.getChallengeById(id)); // GET "currentChallengeDAO/{id}"
-//    return "admin_change_challenge.html";
-//  }
-//
-//  @PostMapping("/addchallenge") // POST "/addchallengeDTO"
-//  public String addChallenge(@ModelAttribute("currentChallenge") Challenge challenge) {
-//    logger.info("POST/addchallenge has been called");
-//    challengeService.addChallenge(challenge);
-//    return "redirect:/admin";
-//  }
-//
-//  @PostMapping("/admin/{id}") // POST "/addchallengeDTO/{challengeId}"
-//  public String addChallenge(@ModelAttribute("challenge") Challenge challenge,
-//                             @PathVariable long id) throws NoSuchChallengeMinkCeption {
-//    logger.info("POST/admin/{id} has been called");
-//    Challenge currentChallenge = challengeService.getChallengeById(id);
-//    currentChallenge.setName(challenge.getName());
-//    currentChallenge.setStartDate(challenge.getStartDate().plusDays(1));
-//    currentChallenge.setEndDate(challenge.getEndDate().plusDays(1));
-//    currentChallenge.setMinimumCommitment(challenge.getMinimumCommitment());
-//    challengeService.addChallenge(challenge);
-//    return "redirect:/admin";
-//  }
-//
-//  @PostMapping("/delChallenge/{challengeId}") // DELETE "/delChallengeById/{challengeId}"
-//  public String delChallegne(@PathVariable long challengeId) {
-//    challengeService.deleteChallenge(challengeId);
-//    return "redirect:/admin";
-//  }
-//}
