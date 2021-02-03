@@ -6,6 +6,7 @@ import challenger.mink.challenges.minkceptions.NoSuchChallengeMinkCeption;
 import challenger.mink.commitments.minkceptions.CommitmentAlreadySetDoneMinkCeption;
 import challenger.mink.commitments.minkceptions.IllegalDateMinkCeption;
 import challenger.mink.commitments.minkceptions.InvalidInputCommitmentMinkCeption;
+import challenger.mink.commitments.minkceptions.InvalidUserMinkCeption;
 import challenger.mink.commitments.minkceptions.NoSuchCommitmentMinkCeption;
 import challenger.mink.users.User;
 import challenger.mink.users.UserRepository;
@@ -27,13 +28,15 @@ public class CommitmentService {
         .orElseThrow(NoSuchCommitmentMinkCeption::new);
   }
 
-  public void setCommitmentDone(long commitmentId)
+  public void setCommitmentDone(long commitmentId, User user)
       throws NoSuchCommitmentMinkCeption, IllegalDateMinkCeption,
-      CommitmentAlreadySetDoneMinkCeption {
+      CommitmentAlreadySetDoneMinkCeption, InvalidUserMinkCeption {
     Commitment commitment = getCommitmentById(commitmentId);
     if (/*LocalDate.now().isBefore(commitment.getDate())  || */
         LocalDate.now().isAfter(commitment.getChallenge().getEndDate().plusDays(1))) {
       throw new IllegalDateMinkCeption();
+    } else if (user != commitment.getUser()) {
+      throw new InvalidUserMinkCeption();
     } else if (commitment.isDone()) {
       throw new CommitmentAlreadySetDoneMinkCeption();
     } else {
@@ -43,10 +46,15 @@ public class CommitmentService {
     }
   }
 
-  public void deleteCommitment(long commitmentId) throws NoSuchCommitmentMinkCeption {
-    Commitment commitment =
-        getCommitmentById(commitmentId);
-    if (LocalDate.now().isBefore(commitment.getChallenge().getStartDate())) {
+  public void deleteCommitment(long commitmentId, User user)
+      throws NoSuchCommitmentMinkCeption, InvalidInputCommitmentMinkCeption,
+      InvalidUserMinkCeption {
+    Commitment commitment = getCommitmentById(commitmentId);
+    if (!LocalDate.now().isBefore(commitment.getChallenge().getStartDate())) {
+      throw new InvalidInputCommitmentMinkCeption();
+    } else if (commitmentRepository.getUserIdByCommitmentId(commitmentId) != user.getId()) {
+      throw new InvalidUserMinkCeption();
+    } else {
       commitmentRepository.delete(commitment);
     }
   }
@@ -71,7 +79,7 @@ public class CommitmentService {
 
   public void modifyCommitmentFromDTO(CommitmentDTO commitmentDTO, Long commitmentId, User user)
       throws InvalidInputCommitmentMinkCeption, NoSuchChallengeMinkCeption,
-      NoSuchCommitmentMinkCeption {
+      NoSuchCommitmentMinkCeption, InvalidUserMinkCeption {
     Commitment commitment =
         commitmentRepository.findById(commitmentId).orElseThrow(NoSuchCommitmentMinkCeption::new);
     Challenge challenge = challengeRepository.findById(commitmentDTO.getChallengeId())
@@ -79,7 +87,7 @@ public class CommitmentService {
     if (unvalidateCommitment(commitmentDTO, challenge)) {
       throw new InvalidInputCommitmentMinkCeption();
     } else if (user != commitment.getUser()) {
-      throw new InvalidInputCommitmentMinkCeption();
+      throw new InvalidUserMinkCeption();
     } else {
       commitment.setDescription(commitmentDTO.getDescription());
       commitment.setDate(commitmentDTO.getDate().plusDays(1));
@@ -97,10 +105,12 @@ public class CommitmentService {
         .isAfter(challenge.getStartDate());
   }
 
-  public CommitmentDAO findCommitmentDAObyCommitmentId(long commitmentId)
-      throws NoSuchCommitmentMinkCeption {
+  public CommitmentDAO findCommitmentDAObyCommitmentId(long commitmentId, User user)
+      throws NoSuchCommitmentMinkCeption, InvalidUserMinkCeption {
     if (!commitmentRepository.existsById(commitmentId)) {
       throw new NoSuchCommitmentMinkCeption();
+    } else if (commitmentRepository.getUserIdByCommitmentId(commitmentId) != user.getId()) {
+      throw new InvalidUserMinkCeption();
     } else {
       return new CommitmentDAO(commitmentRepository.findDAOByCommitmentId(commitmentId).get(0));
     }

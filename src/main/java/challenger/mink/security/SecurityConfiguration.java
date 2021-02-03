@@ -32,10 +32,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
         .authorizeRequests()
-//        .antMatchers("{/user_pages/**}")
+//        .antMatchers("/api/**")
 //        .hasAnyAuthority("USER", "ADMIN")
-//        .antMatchers("{/admin_pages/**}")
-//        .hasAuthority("ADMIN")
+        .antMatchers("/api/admin/**")
+        .hasAuthority("ADMIN")
         .antMatchers("/login", "/api/registerNewUser", "/api/verifyMail/{uuid}", "/websocket", "/websocket/**")
         .permitAll()
         .anyRequest()

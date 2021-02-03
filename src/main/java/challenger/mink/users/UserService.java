@@ -7,6 +7,7 @@ import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedEmailMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedUsernameMinkCeption;
 import challenger.mink.users.roles.RoleService;
+import java.security.Principal;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +26,6 @@ public class UserService {
   private final AuthenticationManager authenticationManager;
   private final MyUserDetailsService myUserDetailsService;
   private final JwtUtil jwtUtil;
-
 
 //  public User registerNewUser(User user)
 //      throws OccupiedUsernameMinkCeption, OccupiedEmailMinkCeption {
@@ -47,7 +47,7 @@ public class UserService {
 //  }
 
   public User saveUser(User user) {
-     return userRepository.save(user);
+    return userRepository.save(user);
   }
 
   private boolean isUsernameOccupied(String name) {
