@@ -1,5 +1,7 @@
 package challenger.mink.users;
 
+import challenger.mink.users.login.LoginRequestDTO;
+import challenger.mink.users.login.LoginSuccessDTO;
 import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedEmailMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedUsernameMinkCeption;
@@ -69,7 +71,7 @@ public class UserRestController {
           .ok("Congratulation, You just verified Your account! Feel free to log in!");
     }
   }
-}
+
 //  @GetMapping("/verify/{uuid}")
 ////  GET "/verifyMail/{uuid}"
 //  public String verifyEmail(@PathVariable String uuid) throws NoSuchUserMinkCeption {
@@ -84,3 +86,18 @@ public class UserRestController {
 //    }
 //  }
 //}
+
+
+  @PostMapping("/login")
+  public ResponseEntity<LoginSuccessDTO> login(@RequestBody(required = false)
+                                                   LoginRequestDTO loginRequestDTO) {
+//    logger.traceEntry("POST/login has been called!");
+//    logger.info("POST/login Successful login with username: {}!", loginRequestDTO.getUsername());
+//    logger.traceExit("POST/login with username: {}", loginRequestDTO.getUsername());
+    LoginSuccessDTO loginSuccessDTO =
+        new LoginSuccessDTO(userService.authenticateExistingUser(loginRequestDTO));
+//    userService.updateStatus(loginRequestDTO.getUsername(), loginSuccessDTO);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(loginSuccessDTO);
+  }
+}

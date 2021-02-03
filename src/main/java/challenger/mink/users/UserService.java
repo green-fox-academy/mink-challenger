@@ -1,11 +1,17 @@
 package challenger.mink.users;
 
+import challenger.mink.security.JwtUtil;
+import challenger.mink.security.MyUserDetailsService;
+import challenger.mink.users.login.LoginRequestDTO;
 import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedEmailMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedUsernameMinkCeption;
 import challenger.mink.users.roles.RoleService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +22,10 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   private final RoleService roleService;
   private final MailGun mailGun;
+  private final AuthenticationManager authenticationManager;
+  private final MyUserDetailsService myUserDetailsService;
+  private final JwtUtil jwtUtil;
+
 
   public User registerNewUser(User user)
       throws OccupiedUsernameMinkCeption, OccupiedEmailMinkCeption {
@@ -48,9 +58,9 @@ public class UserService {
     return userRepository.existsUserByEmail(email);
   }
 
-  public long findUserIdByName(String name) {
-    return userRepository.findByUsername(name).getId();
-  }
+//  public long findUserIdByName(String name) {
+//    return userRepository.findByUsername(name).getId();
+//  }
 
   public User findUserByUuid(String uuid) throws NoSuchUserMinkCeption {
     return userRepository.findUserByUuid(uuid).orElseThrow(NoSuchUserMinkCeption::new);
@@ -83,10 +93,20 @@ public class UserService {
   }
 
   public User findUserByName(String name) throws NoSuchUserMinkCeption {
-    if (userRepository.findByUsername(name) == null) {
+    if (!userRepository.findByUsername(name).isPresent()) {
       throw new NoSuchUserMinkCeption();
     } else {
-      return userRepository.findByUsername(name);
+      return userRepository.findByUsername(name).orElseThrow(NoSuchUserMinkCeption::new);
     }
+  }
+
+  public String authenticateExistingUser(LoginRequestDTO loginRequestDTO) {
+    authenticationManager
+        .authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(),
+            loginRequestDTO.getPassword()));
+
+    UserDetails userDetails =
+        myUserDetailsService.loadUserByUsername(loginRequestDTO.getUsername());
+    return jwtUtil.generateToken(userDetails);
   }
 }

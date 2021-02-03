@@ -1,43 +1,44 @@
 package challenger.mink.security;
 
 import challenger.mink.users.User;
-import challenger.mink.users.roles.Role;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+
 public class MyUserDetails implements UserDetails {
 
-  private final User user;
+  private String username;
+  private String password;
+
+
+  public MyUserDetails(User user) {
+    this.username = user.getUsername();
+    this.password = user.getPassword();
+  }
+
+  public MyUserDetails(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    Set<Role> roles = user.getRoles();
-    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-    for (Role role : roles) {
-      authorities.add(new SimpleGrantedAuthority(role.getName()));
-    }
-    return authorities;
+    return null;
   }
 
   @Override
   public String getPassword() {
-    return user.getPassword();
+    return password;
   }
 
   @Override
   public String getUsername() {
-    return user.getUsername();
+    return username;
   }
 
   @Override
@@ -57,7 +58,6 @@ public class MyUserDetails implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return user.isEmailVerified();
+    return true;
   }
-
 }
