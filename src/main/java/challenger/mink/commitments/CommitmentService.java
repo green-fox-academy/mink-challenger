@@ -1,7 +1,6 @@
 package challenger.mink.commitments;
 
 import challenger.mink.challenges.Challenge;
-import challenger.mink.challenges.ChallengeDAO;
 import challenger.mink.challenges.ChallengeRepository;
 import challenger.mink.challenges.minkceptions.NoSuchChallengeMinkCeption;
 import challenger.mink.commitments.minkceptions.InvalidInputCommitmentMinkCeption;
@@ -9,10 +8,7 @@ import challenger.mink.commitments.minkceptions.NoSuchCommitmentMinkCeption;
 import challenger.mink.users.User;
 import challenger.mink.users.UserRepository;
 import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
-import java.math.BigInteger;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
