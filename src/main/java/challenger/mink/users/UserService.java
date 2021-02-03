@@ -46,8 +46,8 @@ public class UserService {
 //    }
 //  }
 
-  public void saveUser(User user) {
-     userRepository.save(user);
+  public User saveUser(User user) {
+     return userRepository.save(user);
   }
 
   private boolean isUsernameOccupied(String name) {
@@ -101,4 +101,3 @@ public class UserService {
     return jwtUtil.generateToken(userDetails);
   }
 }
-
