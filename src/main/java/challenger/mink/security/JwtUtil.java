@@ -1,13 +1,12 @@
 package challenger.mink.security;
 
-import challenger.mink.users.roles.Role;
+import challenger.mink.users.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,15 +42,18 @@ public class JwtUtil {
     return extractExpiration(token).before(new Date());
   }
 
-  public String generateToken(UserDetails userDetails) {
+  public String generateToken(UserDetails userDetails, User user) {
     Map<String, Object> claims = new HashMap<>();
-    return createToken(claims, userDetails.getUsername(), userDetails.getAuthorities());
+    return createToken(claims, userDetails.getUsername(), userDetails.getAuthorities(), user.getId());
   }
 
   private String createToken(Map<String, Object> claims, String subject,
-                             Collection<? extends GrantedAuthority> roles) {
+                             Collection<? extends GrantedAuthority> roles, long id) {
 
-    return Jwts.builder().setClaims(claims).setSubject(subject)
+    return Jwts.builder()
+        .setClaims(claims)
+        .setSubject(subject)
+        .claim("id", id)
         .claim("Authorities", roles)
         .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))

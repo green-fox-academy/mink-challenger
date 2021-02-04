@@ -7,7 +7,6 @@ import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedEmailMinkCeption;
 import challenger.mink.users.minkceptions.OccupiedUsernameMinkCeption;
 import challenger.mink.users.roles.RoleService;
-import java.security.Principal;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +25,7 @@ public class UserService {
   private final AuthenticationManager authenticationManager;
   private final MyUserDetailsService myUserDetailsService;
   private final JwtUtil jwtUtil;
+//  private final User user;
 
 //  public User registerNewUser(User user)
 //      throws OccupiedUsernameMinkCeption, OccupiedEmailMinkCeption {
@@ -91,13 +91,14 @@ public class UserService {
     return userRepository.findByUsername(name).orElseThrow(NoSuchUserMinkCeption::new);
   }
 
-  public String authenticateExistingUser(LoginRequestDTO loginRequestDTO) {
+  public String authenticateExistingUser(LoginRequestDTO loginRequestDTO)
+      throws NoSuchUserMinkCeption {
     authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(),
             loginRequestDTO.getPassword()));
 
     UserDetails userDetails =
         myUserDetailsService.loadUserByUsername(loginRequestDTO.getUsername());
-    return jwtUtil.generateToken(userDetails);
+    return jwtUtil.generateToken(userDetails, findUserByName(loginRequestDTO.getUsername()));
   }
 }

@@ -36,7 +36,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        .hasAnyAuthority("USER", "ADMIN")
         .antMatchers("/api/admin/**")
         .hasAuthority("ADMIN")
-        .antMatchers("/login", "/api/registerNewUser", "/api/verifyMail/{uuid}", "/websocket", "/websocket/**")
+        .antMatchers("/login", "/api/registerNewUser", "/api/verifyMail/{uuid}", "/websocket",
+            "/websocket/**", "/callback")
         .permitAll()
         .anyRequest()
         .authenticated()

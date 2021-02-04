@@ -6,27 +6,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-//import kong.unirest.Unirest;
-//import kong.unirest.UnirestException;
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.stereotype.Component;
-//import kong.unirest.HttpResponse;
-//import kong.unirest.JsonNode;
-//import lombok.RequiredArgsConstructor;
-//import com.greenfoxacademy.springwebapp.user.UserRepository;
-//import com.greenfoxacademy.springwebapp.user.exceptions.NoSuchUserException;
-
 @RequiredArgsConstructor
 @Component
 public class MailGun {
 
   private final UserRepository userRepository;
 
-  public static final String YOUR_DOMAIN_NAME =
-      "sandboxd89b3ede17c8401cbfbbc4f93c53ccda.mailgun.org";
+  @Value("${MAILGUN_DOMAIN}")
+  private String YOUR_DOMAIN_NAME;
 
   @Value("${API_KEY}")
-  public String apiKey;
+  private String apiKey;
 
   public void sendSimpleMessage(String uuid) {
     Unirest.post("https://api.mailgun.net/v3/" + YOUR_DOMAIN_NAME + "/messages")
@@ -45,26 +35,14 @@ public class MailGun {
   private String responseEmail(String username, String uuid) {
     return
         "<html>"
-            + "<body>" + "<p>"
-            + "Hello there,  "
-            + username
-            + "!"
-            + "</p>"
+            + "<body>" + "<p>" + "Hello there,  " + username + "!" + "</p>"
             + "<p>"
-            + "Click the link or the picture to verify your email address. "
-            + "<br>"
-            + "<a href=\"http://localhost:8080/verify/"
-            + uuid
-            + "\">"
+            + "Click the link or the picture to verify your email address. " + "<br>"
+            + "<a href=\"http://localhost:8080/api/verifyMail/" + uuid + "\">"
             +
-            "<img src=\"https://i.pinimg.com/originals/ac/d9/81/acd981a162499b120ebcaad5b5258981.jpg\">"
-            + "</a>"
-            + "<br>"
-            + "<a href = \"http://localhost:8080/verify/"
-            + uuid
-            + "\">"
-            + "the link"
-            + "</a>"
+            "<img src=\"https://i.pinimg.com/originals/ac/d9/81/acd981a162499b120ebcaad5b5258981.jpg\">" +
+            "</a>" + "<br>"
+            + "<a href = \"http://localhost:8080/verify/" + uuid + "\">" + "the link" + "</a>"
             + "</p>"
             + "</body>"
             + "</html>";

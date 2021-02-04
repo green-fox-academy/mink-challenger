@@ -1,6 +1,7 @@
 package challenger.mink.users.login;
 
 import challenger.mink.users.UserService;
+import challenger.mink.users.minkceptions.NoSuchUserMinkCeption;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,8 @@ public class LoginController {
   @PostMapping("/login")
   public ResponseEntity<LoginSuccessDTO> login(@RequestBody(required = false)
                                                    LoginRequestDTO loginRequestDTO,
-                                               HttpServletResponse response) {
+                                               HttpServletResponse response)
+      throws NoSuchUserMinkCeption {
     LoginSuccessDTO loginSuccessDTO =
         new LoginSuccessDTO(userService.authenticateExistingUser(loginRequestDTO));
     response.addHeader("X-mink-challenger", userService.authenticateExistingUser(loginRequestDTO));
